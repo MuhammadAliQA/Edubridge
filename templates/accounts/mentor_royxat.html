@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}Mentor bo'lish — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.auth-wrap{padding:48px 20px 80px;width:100%;display:flex;justify-content:center}
+.auth-box{width:100%;max-width:700px;margin:0 auto}
+.auth-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px}
+.auth-logo .dot{color:var(--orange)}
+.auth-title{text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:4px}
+.auth-sub{text-align:center;color:var(--muted);font-size:.875rem;margin-bottom:28px}
+.auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:32px}
+.info-banner{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:12px 16px;font-size:.82rem;color:#93c5fd;margin-bottom:24px}
+.q-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.q-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:.68rem;font-weight:800;margin-right:6px;flex-shrink:0}
+.q-label{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center}
+.auth-switch{text-align:center;margin-top:20px;font-size:.82rem;color:var(--muted)}
+.auth-switch a{color:var(--blue-b);font-weight:600}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-logo">Edu<span class="dot">Bridge</span></div>
+    <div class="auth-title" data-i18n="mentor_reg.title">Mentor bo'lish</div>
+    <div class="auth-sub" data-i18n="mentor_reg.sub">Har bir o'quvchidan 200,000 so'm ishlang</div>
+
+    <div class="auth-card">
+      <div class="info-banner">
+        <span data-i18n="mentor_reg.notice">Mentor profilingiz admin tomonidan tekshiriladi. Har bir viloyatdan mentorlar qabul qilinadi.</span>
+      </div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="form-section">👤 <span data-i18n="form.personal">Shaxsiy ma'lumotlar</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<ul class="errorlist">{% for e in form.first_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}<ul class="errorlist">{% for e in form.last_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ form.email.label }}</label>
+          {{ form.email }}
+          {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.username.label }}</label>
+            {{ form.username }}
+            {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.tajriba_yil.label }}</label>
+            {{ form.tajriba_yil }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+          </div>
+        </div>
+
+        <div class="form-section">🎯 <span data-i18n="form.direction">Yo'nalish va joylashuv</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.yonalish.label }}</label>
+            {{ form.yonalish }}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.viloyat.label }}</label>
+            {{ form.viloyat }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.ball.label }}</label>
+            {{ form.ball }}
+            <div class="form-hint" data-i18n="form.score_hint">IELTS: 7.5 | SAT: 1450</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.haqida.label }}</label>
+            {{ form.haqida }}
+          </div>
+        </div>
+
+        <div class="form-section">❓ <span data-i18n="form.questions">5 ta muhim savol</span></div>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px" data-i18n="form.questions_hint">Ushbu savollarga to'liq javob bering — o'quvchilar profilingizda ko'radi.</p>
+
+        <div class="q-box">
+          <div class="q-label"><span class="q-num">1</span>{{ form.tajriba.label }}</div>
+          {{ form.tajriba }}
+        </div>
+        <div class="q-box">
+          <div class="q-label"><span class="q-num">2</span>{{ form.metodologiya.label }}</div>
+          {{ form.metodologiya }}
+        </div>
+        <div class="q-box">
+          <div class="q-label"><span class="q-num">3</span>{{ form.muvaffaqiyat.label }}</div>
+          {{ form.muvaffaqiyat }}
+        </div>
+        <div class="q-box">
+          <div class="q-label"><span class="q-num">4</span>{{ form.vaqt.label }}</div>
+          {{ form.vaqt }}
+        </div>
+        <div class="q-box">
+          <div class="q-label"><span class="q-num">5</span>{{ form.maqsad.label }}</div>
+          {{ form.maqsad }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="border-radius:12px;padding:13px;margin-top:8px;font-size:.95rem">
+          🚀 <span data-i18n="mentor_reg.submit">Ariza yuborish</span>
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        <span data-i18n="auth.have_account">Allaqachon hisobingiz bormi?</span> <a href="/kirish/" data-i18n="nav.login">Kirish</a> ·
+        <span data-i18n="auth.be_student">O'quvchi bo'lish:</span> <a href="/student/royxat/" data-i18n="auth.here">Bu yerga</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

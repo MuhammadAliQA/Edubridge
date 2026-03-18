@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% block title %}SAT kursi — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.course-hero{
+  background:linear-gradient(135deg,rgba(157,23,77,.12),rgba(236,72,153,.06));
+  border-bottom:1px solid rgba(236,72,153,.15);
+  padding:56px 0 48px;
+}
+.course-hero-inner{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.course-badge-big{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.25);
+  padding:5px 14px;border-radius:50px;
+  font-size:.75rem;font-weight:700;color:#f9a8d4;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.course-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:14px}
+.course-hero h1 span{color:#f9a8d4}
+.course-hero p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:520px;margin-bottom:24px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.course-stat-box{
+  background:var(--surface2);border:1px solid rgba(236,72,153,.2);
+  border-radius:var(--r2);padding:28px 32px;text-align:center;min-width:180px;
+}
+.csb-n{font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;font-weight:800;color:#f9a8d4;display:block}
+.csb-l{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px}
+.info-card-icon{font-size:1.8rem;margin-bottom:12px}
+.info-card h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.info-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+.mentors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+.sat-sections{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:60px}
+.sat-sec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:22px}
+.sat-sec-card h3{font-size:.95rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.sat-sec-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.sat-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:700;background:rgba(236,72,153,.1);color:#f9a8d4;border:1px solid rgba(236,72,153,.2)}
+
+.score-table{width:100%;border-collapse:collapse}
+.score-table th{text-align:left;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);padding:8px 14px;border-bottom:1px solid var(--border2)}
+.score-table td{padding:10px 14px;font-size:.875rem;border-bottom:1px solid var(--border);color:var(--muted)}
+.score-table td:first-child{color:var(--text);font-weight:600}
+.score-table tr:last-child td{border-bottom:none}
+
+.faq-item{border-bottom:1px solid var(--border);padding:18px 0}
+.faq-q{font-weight:600;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q .arr{transition:transform .2s;flex-shrink:0;color:var(--muted)}
+.faq-a{font-size:.875rem;color:var(--muted);line-height:1.7;margin-top:10px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .arr{transform:rotate(180deg)}
+
+@media(max-width:900px){
+  .course-hero-inner{grid-template-columns:1fr}
+  .course-stat-box{display:none}
+  .info-grid,.sat-sections{grid-template-columns:1fr}
+  .mentors-grid{grid-template-columns:1fr}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="course-hero">
+  <div class="container">
+    <div class="course-hero-inner">
+      <div>
+        <div class="course-badge-big">📐 SAT</div>
+        <h1><span data-i18n="sat.title">SAT da 1400+ olaylik</span></h1>
+        <p data-i18n="sat.desc">O'zbekistonning barcha viloyatlaridan tasdiqlangan SAT mentorlari. Haftada 3 ta dars, 3 soatdan.</p>
+        <div class="hero-btns">
+          <a href="/student/royxat/" class="btn btn-primary btn-lg">🎓 <span data-i18n="sat.enroll">Yozilish</span></a>
+          <a href="/free-darslar/" class="btn btn-ghost btn-lg">🆓 <span data-i18n="sat.try_free">Bepul sinab ko'rish</span></a>
+        </div>
+      </div>
+      <div class="course-stat-box">
+        <span class="csb-n">300K</span>
+        <div class="csb-l" data-i18n="hero.stat_price">so'm / hafta</div>
+        <div style="margin:16px 0;border-top:1px solid var(--border)"></div>
+        <span class="csb-n">1600</span>
+        <div class="csb-l" data-i18n="sat.max_ball">max ball</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec container">
+
+  <!-- INFO CARDS -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-icon">📅</div>
+      <h3 data-i18n="course.schedule_title">Dars jadvali</h3>
+      <p data-i18n="course.schedule_desc">Haftada 3 ta dars, har biri 3 soatdan. Online formatda, qulay vaqtda mentor bilan kelishiladi.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">💰</div>
+      <h3 data-i18n="course.price_title">Narxi</h3>
+      <p data-i18n="course.price_desc">1 hafta — 300,000 so'm. Mentorga 200,000 so'm. Istalgan vaqt to'xtatish mumkin.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🎯</div>
+      <h3 data-i18n="course.learn_title">Nima o'rganasiz</h3>
+      <p data-i18n="sat.learn_desc">Math va EBRW (Reading, Writing) — SAT ning barcha bo'limlari.</p>
+    </div>
+  </div>
+
+  <!-- SAT SECTIONS -->
+  <div style="margin-bottom:60px">
+    <div class="sec-tag" data-i18n="sat.sections_tag">Bo'limlar</div>
+    <h2 class="sec-h" data-i18n="sat.sections_title">SAT tarkibi</h2>
+    <p style="color:var(--muted);font-size:.875rem;margin-bottom:24px" data-i18n="sat.sections_desc">Digital SAT (2024 yildan yangi format)</p>
+    <div class="sat-sections">
+      <div class="sat-sec-card">
+        <h3>📊 Math <span class="sat-badge">800 ball</span></h3>
+        <p>Algebra, Advanced Math, Problem-Solving, Data Analysis, Geometry va Trigonometry. Kalkulyator ruxsat etiladi.</p>
+      </div>
+      <div class="sat-sec-card">
+        <h3>📖 Reading & Writing <span class="sat-badge">800 ball</span></h3>
+        <p>Evidence-Based Reading va Writing. Matn tahlili, grammatika, so'z boyligi va mantiqiy fikrlash.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE TABLE + FAQ -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:60px">
+    <div>
+      <div class="sec-tag" data-i18n="course.score_tag">Ball tizimi</div>
+      <h2 class="sec-h" style="text-align:left" data-i18n="sat.scores_title">SAT ballari</h2>
+      <p style="color:var(--muted);font-size:.875rem;margin-bottom:20px" data-i18n="sat.scores_desc">Universitetlar qabul qiladigan ball chegaralari</p>
+      <div class="card" style="overflow:hidden">
+        <table class="score-table">
+          <thead><tr><th>Ball</th><th>Daraja</th><th>Universitetlar</th></tr></thead>
+          <tbody>
+            <tr><td>1500–1600</td><td>Excellent</td><td>MIT, Harvard, Yale</td></tr>
+            <tr><td>1400–1499</td><td>Very Good</td><td>Top 50 US univ.</td></tr>
+            <tr><td>1200–1399</td><td>Good</td><td>Ko'pchilik US univ.</td></tr>
+            <tr><td>1000–1199</td><td>Average</td><td>Ba'zi universitetlar</td></tr>
+            <tr><td>800–999</td><td>Below avg</td><td>Open admission</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="sec-tag" data-i18n="course.faq_tag">FAQ</div>
+      <h2 class="sec-h" style="text-align:left" data-i18n="course.faq_title">Savollar</h2>
+      <p style="color:var(--muted);font-size:.875rem;margin-bottom:20px" data-i18n="course.faq_desc">Ko'p so'raladigan savollar</p>
+      <div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Digital SAT PSAT dan farqi nima? <span class="arr">▾</span></div>
+          <div class="faq-a">SAT — asosiy imtihon (max 1600). PSAT — SAT ga tayyorgarlik imtihoni (max 1520). PSAT National Merit stipendiyasiga yo'l ochadi.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Qancha vaqt tayyorgarlik kerak? <span class="arr">▾</span></div>
+          <div class="faq-a">Maqsadga qarab 3–9 oy. 1200 dan 1400 ga chiqish uchun ~4–5 oy intensiv tayyorgarlik. Haftada 3 ta dars yetarli.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">SAT O'zbekistonda topshiriladi? <span class="arr">▾</span></div>
+          <div class="faq-a">Ha. Toshkentdagi College Board akkreditatsiya qilingan markazlarda topshirish mumkin. Yiliga bir necha marta o'tkaziladi.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">SAT necha marta topshirsa bo'ladi? <span class="arr">▾</span></div>
+          <div class="faq-a">Cheklanmagan. Ko'pchilik 2–3 marta topshiradi. College Board "Score Choice" orqali eng yaxshi natijani yuborish mumkin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENTORS -->
+  <div class="sec-head">
+    <div class="sec-tag" data-i18n="sat.mentors_tag">SAT mentorlari</div>
+    <h2 class="sec-h" data-i18n="sat.mentors_title">Tasdiqlangan SAT mentorlari</h2>
+    <p class="sec-p" data-i18n="sat.mentors_sub">Har biri SAT topshirgan, tajribali va viloyatingizdan</p>
+  </div>
+  <div class="mentors-grid">
+    {% for mentor in mentorlar %}
+    <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
+      <div class="mc-top">
+        <div class="mc-av" style="background:linear-gradient(135deg,#be185d,#ec4899)">
+          {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
+        </div>
+        <div>
+          <div class="mc-name">{{ mentor.user.get_full_name }}</div>
+          <div class="mc-loc">📍 {{ mentor.get_viloyat_display }}</div>
+          <div class="mc-stars">★★★★★ {{ mentor.reytinq|floatformat:1 }}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span class="badge badge-sat">SAT</span>
+        {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Ball: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+        <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
+      </div>
+      <div class="mc-price"><div class="mc-price-n">300,000 so'm</div><div class="mc-price-s">1 hafta · 3 dars · 3 soatdan</div></div>
+      <div class="mc-btn" data-i18n="mentors.details">Ko'rish →</div>
+    </div>
+    {% empty %}
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
+      <p><span data-i18n="sat.empty">Hozircha SAT mentorlari yo'q.</span><br><a href="/mentor/royxat/" style="color:#f9a8d4" data-i18n="sat.be_first">Birinchi SAT mentor bo'ling!</a></p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if mentorlar %}
+  <div style="text-align:center;margin-top:28px">
+    <a href="/mentorlar/?yonalish=sat" class="btn btn-ghost" style="padding:11px 28px" data-i18n="sat.all">Barcha SAT mentorlarni ko'rish →</a>
+  </div>
+  {% endif %}
+
+  <!-- CTA -->
+  <div style="margin-top:72px;background:linear-gradient(135deg,rgba(157,23,77,.08),rgba(236,72,153,.05));border:1px solid rgba(236,72,153,.2);border-radius:28px;padding:48px;text-align:center">
+    <div class="sec-tag" style="display:block;margin-bottom:10px;color:#f9a8d4">Boshlang</div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-1px;margin-bottom:12px" data-i18n="sat.cta_title">SAT tayyorgarligini bugun boshlang</h2>
+    <p style="color:var(--muted);font-size:.95rem;margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto" data-i18n="sat.cta_desc">Haftada 3 ta dars bilan 4–6 oy ichida maqsad ballingizga erishing</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a href="/student/royxat/" class="btn btn-primary btn-lg" data-i18n="sat.enroll">Yozilish</a>
+      <a href="/free-darslar/" class="btn btn-ghost btn-lg" data-i18n="ielts.try2">Bepul dars ko'rish</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFaq(el){
+  const item=el.closest('.faq-item');
+  document.querySelectorAll('.faq-item.open').forEach(i=>{if(i!==item)i.classList.remove('open')});
+  item.classList.toggle('open');
+}
+</script>
+{% endblock %}

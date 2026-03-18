@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}{{ mentor.user.get_full_name }} — EduBridge{% endblock %}
+{% block content %}
+{% include 'accounts/mentor_profil.html' with mentor=mentor %}
+{% endblock %}

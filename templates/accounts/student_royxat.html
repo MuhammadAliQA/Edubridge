@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}O'quvchi bo'lish — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.auth-wrap{padding:48px 20px 80px;width:100%;display:flex;justify-content:center}
+.auth-box{width:100%;max-width:540px;margin:0 auto}
+.auth-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px}
+.auth-logo .dot{color:var(--orange)}
+.auth-title{text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:4px}
+.auth-sub{text-align:center;color:var(--muted);font-size:.875rem;margin-bottom:24px}
+.benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.benefit{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:8px}
+.auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:28px}
+.auth-switch{text-align:center;margin-top:20px;font-size:.82rem;color:var(--muted)}
+.auth-switch a{color:var(--blue-b);font-weight:600}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-logo">Edu<span class="dot">Bridge</span></div>
+    <div class="auth-title" data-i18n="student_reg.title">O'quvchi bo'lish</div>
+    <div class="auth-sub" data-i18n="student_reg.sub">Top mentorlar bilan IELTS, SAT va ingliz tilini o'rganing</div>
+
+    <div class="benefits">
+      <div class="benefit">🎯 <span data-i18n="student_reg.b1">Top mentorlar tanlash</span></div>
+      <div class="benefit">📅 <span data-i18n="student_reg.b2">Haftada 3 dars, 3 soatdan</span></div>
+      <div class="benefit">🆓 <span data-i18n="student_reg.b3">Bepul darslar mavjud</span></div>
+      <div class="benefit">🏆 <span data-i18n="student_reg.b4">Maqsad balingizga erishing</span></div>
+    </div>
+
+    <div class="auth-card">
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="form-section">👤 <span data-i18n="form.personal">Shaxsiy ma'lumotlar</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<ul class="errorlist">{% for e in form.first_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ form.email.label }}</label>
+          {{ form.email }}
+          {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.username.label }}</label>
+            {{ form.username }}
+            {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.yosh.label }}</label>
+            {{ form.yosh }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+          </div>
+        </div>
+
+        <div class="form-section">📍 <span data-i18n="form.extra">Qo'shimcha ma'lumotlar</span></div>
+        <div class="form-group">
+          <label class="form-label">{{ form.o_qish_joyi.label }}</label>
+          {{ form.o_qish_joyi }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ form.yashash_joyi.label }}</label>
+          {{ form.yashash_joyi }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ form.kutish.label }}</label>
+          {{ form.kutish }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="border-radius:12px;padding:13px;font-size:.95rem">
+          📚 <span data-i18n="student_reg.submit">Ro'yxatdan o'tish</span>
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        <span data-i18n="auth.have_account">Allaqachon hisobingiz bormi?</span> <a href="/kirish/" data-i18n="nav.login">Kirish</a> ·
+        <span data-i18n="auth.be_mentor">Mentor bo'lish:</span> <a href="/mentor/royxat/" data-i18n="auth.here">Bu yerga</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

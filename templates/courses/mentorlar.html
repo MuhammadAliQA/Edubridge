@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Mentorlar — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header{background:linear-gradient(135deg,var(--surface2),var(--surface3));border-bottom:1px solid var(--border2);padding:40px 0 36px}
+.page-header h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.page-header p{color:var(--muted);font-size:.9rem}
+.filter-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:78px;z-index:50}
+.filter-inner{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-select{padding:8px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:50px;color:var(--text);font-size:.82rem;outline:none;cursor:pointer;font-family:inherit}
+.filter-select:focus{border-color:var(--blue)}
+.filter-select option{background:var(--surface2)}
+.filter-count{margin-left:auto;font-size:.78rem;color:var(--muted)}
+.filter-clear{font-size:.78rem;color:var(--muted);transition:color .2s}
+.filter-clear:hover{color:var(--red)}
+.mentors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:32px 0 80px}
+.empty-state{text-align:center;padding:80px 20px;color:var(--muted);grid-column:1/-1}
+.empty-state .icon{font-size:2.5rem;margin-bottom:12px}
+.empty-state h3{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty-state a{color:var(--blue-b)}
+@media(max-width:600px){
+  .filter-inner{gap:8px}
+  .filter-count{display:none}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="sec-tag" data-i18n="page.all_mentors_tag">Barcha mentorlar</div>
+    <h1>🏆 <span data-i18n="page.mentors_title">Mentorlar</span></h1>
+    <p data-i18n="page.mentors_sub">O'zbekistonning barcha viloyatlaridan tasdiqlangan IELTS, SAT va Ingliz tili mentorlari</p>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="container">
+    <form method="get" class="filter-inner">
+      <select name="yonalish" class="filter-select" onchange="this.form.submit()">
+        <option value="" data-i18n="page.filter_all_dir">Barcha yo'nalishlar</option>
+        {% for val, label in yonalishlar %}
+        <option value="{{ val }}" {% if tanlangan_yonalish == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <select name="viloyat" class="filter-select" onchange="this.form.submit()">
+        <option value="" data-i18n="page.filter_all_reg">Barcha viloyatlar</option>
+        {% for val, label in viloyatlar %}
+        <option value="{{ val }}" {% if tanlangan_viloyat == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      {% if tanlangan_yonalish or tanlangan_viloyat %}
+      <a href="/mentorlar/" class="filter-clear" data-i18n="page.filter_clear">✕ Tozalash</a>
+      {% endif %}
+      <span class="filter-count">{{ mentorlar.count }} <span data-i18n="page.mentors_count">ta mentor</span></span>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <div class="mentors-grid">
+    {% for mentor in mentorlar %}
+    <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
+      <div class="mc-top">
+        <div class="mc-av"
+          {% if mentor.yonalish == 'ielts' %}style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)"
+          {% elif mentor.yonalish == 'sat' %}style="background:linear-gradient(135deg,#be185d,#ec4899)"
+          {% else %}style="background:linear-gradient(135deg,#0f766e,#14b8a6)"{% endif %}>
+          {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">
+          {% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
+        </div>
+        <div>
+          <div class="mc-name">{{ mentor.user.get_full_name }}</div>
+          <div class="mc-loc">📍 {{ mentor.get_viloyat_display }}</div>
+          <div class="mc-stars">★★★★★ {{ mentor.reytinq|floatformat:1 }}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span class="badge badge-{{ mentor.yonalish }}">{{ mentor.get_yonalish_display }}</span>
+        {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Ball: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+        <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
+      </div>
+      {% if mentor.haqida %}
+      <p style="font-size:.8rem;color:var(--muted);line-height:1.5">{{ mentor.haqida|truncatechars:90 }}</p>
+      {% endif %}
+      <div class="mc-price">
+        <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
+        <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a href="/mentor/{{ mentor.pk }}/" class="mc-btn" style="flex:1" data-i18n="mentors.details">Batafsil</a>
+        {% if user.is_authenticated and not user.mentor_profile %}
+        <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-sm" style="flex:1;border-radius:10px" data-i18n="ielts.enroll">Yozilish</a>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+      <div class="icon">🔍</div>
+      <h3 data-i18n="page.not_found">Mentor topilmadi</h3>
+      <p><span data-i18n="page.not_found_desc">Filtrni o'zgartiring yoki</span> <a href="/mentor/royxat/" data-i18n="page.become_mentor">mentor bo'ling!</a></p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

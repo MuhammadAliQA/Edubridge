@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %}{{ mentor.user.get_full_name }} — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.profil-wrap{padding:40px 0 80px}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;margin-bottom:24px;transition:color .2s}
+.back-link:hover{color:var(--text)}
+.profil-hero{background:linear-gradient(135deg,rgba(29,78,216,.12),rgba(59,130,246,.06));border:1px solid rgba(59,130,246,.15);border-radius:var(--r2);padding:32px;display:flex;gap:24px;align-items:flex-start;margin-bottom:28px}
+.big-av{width:88px;height:88px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.big-av img{width:100%;height:100%;object-fit:cover}
+.profil-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.profil-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;font-size:.82rem;color:var(--muted)}
+.profil-tags{display:flex;flex-wrap:wrap;gap:6px}
+.profil-tag{background:rgba(255,255,255,.06);border:1px solid var(--border2);padding:4px 12px;border-radius:50px;font-size:.75rem;font-weight:600;color:var(--text)}
+.grid-2{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:16px}
+.section-card h2{font-size:.95rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.q-item{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.q-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-item .q{font-size:.78rem;font-weight:700;color:var(--blue-b);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.q-item .a{font-size:.875rem;color:var(--muted);line-height:1.7}
+.stat-row{display:flex;gap:10px;margin-bottom:12px}
+.stat-box{flex:1;background:var(--surface2);border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border)}
+.stat-box .n{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue-b);display:block}
+.stat-box .l{font-size:.7rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.price-big{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(29,78,216,.06));border:1px solid rgba(59,130,246,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:12px}
+.price-big .pn{font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;color:var(--blue-b)}
+.price-big .ps{font-size:.75rem;color:var(--muted);margin-top:3px}
+.free-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:14px;padding:16px;margin-bottom:12px}
+.free-box h4{font-size:.85rem;font-weight:700;color:#86efac;margin-bottom:6px}
+.free-box p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.875rem}
+.info-row:last-child{border-bottom:none}
+.info-row span{color:var(--muted)}
+.info-row strong{color:var(--text)}
+@media(max-width:900px){
+  .grid-2{grid-template-columns:1fr}
+  .profil-hero{flex-direction:column;align-items:center;text-align:center}
+  .profil-meta{justify-content:center}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profil-wrap">
+  <div class="container">
+    <a href="/mentorlar/" class="back-link">← <span data-i18n="nav.mentors">Mentorlar</span></a>
+
+    <!-- HERO -->
+    <div class="profil-hero">
+      <div class="big-av" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">
+        {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
+      </div>
+      <div>
+        <h1>{{ mentor.user.get_full_name }}</h1>
+        <div class="profil-meta">
+          <span>📍 {{ mentor.get_viloyat_display }}</span>
+          <span>·</span>
+          <span>⏱ {{ mentor.tajriba_yil }} yil tajriba</span>
+          <span>·</span>
+          <span>⭐ {{ mentor.reytinq|floatformat:1 }} reyting</span>
+          <span>·</span>
+          <span>👥 {{ mentor.o_quvchilar_soni }} o'quvchi</span>
+        </div>
+        <div class="profil-tags">
+          <span class="profil-tag">{{ mentor.get_yonalish_display }}</span>
+          {% if mentor.ball %}<span class="profil-tag">Ball: {{ mentor.ball }}</span>{% endif %}
+          <span class="profil-tag">{{ mentor.get_viloyat_display }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="grid-2">
+      <!-- CHAP -->
+      <div>
+        {% if mentor.haqida %}
+        <div class="section-card">
+          <h2>📝 <span data-i18n="profil.about">O'zi haqida</span></h2>
+          <p style="color:var(--muted);font-size:.875rem;line-height:1.75">{{ mentor.haqida }}</p>
+        </div>
+        {% endif %}
+
+        <div class="section-card">
+          <h2>❓ <span data-i18n="profil.qa">Savol va javoblar</span></h2>
+          <div class="q-item">
+            <div class="q" data-i18n="profil.q1">01 · O'qitish tajribangiz?</div>
+            <div class="a">{{ mentor.tajriba }}</div>
+          </div>
+          <div class="q-item">
+            <div class="q" data-i18n="profil.q2">02 · Metodologiya?</div>
+            <div class="a">{{ mentor.metodologiya }}</div>
+          </div>
+          <div class="q-item">
+            <div class="q" data-i18n="profil.q3">03 · Eng katta muvaffaqiyat?</div>
+            <div class="a">{{ mentor.muvaffaqiyat }}</div>
+          </div>
+          <div class="q-item">
+            <div class="q" data-i18n="profil.q4">04 · Dars vaqtlari?</div>
+            <div class="a">{{ mentor.vaqt }}</div>
+          </div>
+          <div class="q-item">
+            <div class="q" data-i18n="profil.q5">05 · EduBridge'ga qo'shilish maqsadi?</div>
+            <div class="a">{{ mentor.maqsad }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- O'NG -->
+      <div>
+        <div class="section-card">
+          <h2>💰 <span data-i18n="profil.price_title">Kurs narxi</span></h2>
+          <div class="price-big">
+            <div class="pn" data-i18n="mentors.price">300,000 so'm</div>
+            <div class="ps" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-box"><span class="n">3</span><div class="l" data-i18n="profil.per_week">dars/hafta</div></div>
+            <div class="stat-box"><span class="n">3h</span><div class="l" data-i18n="profil.each">har biri</div></div>
+          </div>
+          {% if user.is_authenticated %}
+            {% if not user.mentor_profile %}
+            <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
+              🎓 <span data-i18n="profil.enroll">Kursga yozilish</span>
+            </a>
+            {% endif %}
+          {% else %}
+          <a href="/student/royxat/" class="btn btn-orange btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
+            <span data-i18n="profil.register_enroll">Ro'yxatdan o'tib yoziling</span>
+          </a>
+          {% endif %}
+        </div>
+
+        <div class="section-card">
+          <h2>📊 <span data-i18n="profil.info">Ma'lumotlar</span></h2>
+          <div class="info-row"><span data-i18n="profil.subject">Yo'nalish</span><strong>{{ mentor.get_yonalish_display }}</strong></div>
+          <div class="info-row"><span data-i18n="profil.region">Viloyat</span><strong>{{ mentor.get_viloyat_display }}</strong></div>
+          <div class="info-row"><span data-i18n="profil.experience">Tajriba</span><strong>{{ mentor.tajriba_yil }} yil</strong></div>
+          {% if mentor.ball %}
+          <div class="info-row"><span data-i18n="profil.score">Bali</span><strong>{{ mentor.ball }}</strong></div>
+          {% endif %}
+        </div>
+
+        <div class="section-card">
+          <div class="free-box">
+            <h4>🆓 <span data-i18n="profil.free_title">Bepul darslar</span></h4>
+            <p data-i18n="profil.free_desc">Bu mentor haftada 1 marta 1.5 soatlik bepul dars ham o'tkazadi.</p>
+          </div>
+          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Bepul darslarga qarang</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

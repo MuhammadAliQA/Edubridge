@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{% block title %}EduBridge{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06090f;--surface:#0d1117;--surface2:#131920;--surface3:#1a2333;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#e8edf5;--muted:#6b7a96;--muted2:#4a5568;
+  --blue:#3b82f6;--blue-b:#60a5fa;--orange:#f97316;--green:#22c55e;--red:#ef4444;
+  --r:14px;--r2:22px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;min-height:100vh}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0}
+.orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(29,78,216,.22),transparent);top:-150px;left:-150px}
+.orb-2{width:450px;height:450px;background:radial-gradient(circle,rgba(234,88,12,.18),transparent);bottom:-80px;right:-80px}
+.msg-wrap{position:fixed;top:84px;right:20px;z-index:6000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.msg{padding:11px 18px;border-radius:12px;font-size:.85rem;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,.5);pointer-events:all;max-width:320px}
+.msg.success{background:#052e16;color:#86efac;border:1px solid rgba(34,197,94,.25)}
+.msg.error{background:#2a0808;color:#fca5a5;border:1px solid rgba(239,68,68,.25)}
+.msg.info{background:#0c1835;color:#93c5fd;border:1px solid rgba(59,130,246,.25)}
+/* LANG */
+.lang-switcher{display:flex;gap:2px;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:50px;padding:3px;flex-shrink:0}
+.lang-btn{padding:4px 10px;border-radius:50px;font-size:.72rem;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.04em}
+.lang-btn.active{background:var(--surface3);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--text)}
+/* NAV */
+.nav-wrap{position:fixed;top:14px;left:0;width:100%;display:flex;justify-content:center;z-index:1000;padding:0 16px}
+.nav{width:100%;max-width:1160px;background:rgba(13,17,23,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border2);border-radius:100px;padding:9px 14px 9px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.5px;white-space:nowrap;flex-shrink:0}
+.nav-logo .dot{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--muted);font-size:.82rem;font-weight:500;padding:6px 12px;border-radius:50px;transition:all .2s;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,.07)}
+.nav-right{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.nav-user{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.nav-user strong{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 18px;border-radius:50px;font-size:.875rem;font-weight:600;transition:all .2s;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;text-decoration:none}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.05)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 0 20px rgba(59,130,246,.28)}
+.btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:#ea580c;transform:translateY(-1px)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#16a34a;transform:translateY(-1px)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#dc2626}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+.btn-lg{padding:13px 30px;font-size:1rem}
+.btn-full{width:100%}
+.hamburger{display:none;font-size:1.2rem;color:var(--text);background:none;padding:6px 10px;border:1px solid var(--border2);border-radius:10px;flex-shrink:0}
+.page-body{padding-top:78px;position:relative;z-index:1;width:100%;min-height:100vh}
+.container{max-width:1160px;margin:0 auto;padding:0 20px}
+.sec{padding:80px 0}
+.sec-head{text-align:center;margin-bottom:48px}
+.sec-tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-b);margin-bottom:10px}
+.sec-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:10px}
+.sec-p{color:var(--muted);font-size:.95rem;max-width:460px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:50px;font-size:.7rem;font-weight:700;letter-spacing:.04em}
+.badge-ielts{background:rgba(59,130,246,.12);color:#93c5fd;border:1px solid rgba(59,130,246,.2)}
+.badge-sat{background:rgba(236,72,153,.12);color:#f9a8d4;border:1px solid rgba(236,72,153,.2)}
+.badge-ingliz_tili{background:rgba(20,184,166,.12);color:#5eead4;border:1px solid rgba(20,184,166,.2)}
+.badge-free{background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.2)}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:5px}
+.form-control{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:.9rem;transition:border-color .2s;outline:none}
+.form-control:focus{border-color:var(--blue)}
+.form-control::placeholder{color:var(--muted2)}
+textarea.form-control{resize:vertical;min-height:88px}
+select.form-control{cursor:pointer}
+select.form-control option{background:var(--surface2)}
+.errorlist{list-style:none;color:#fca5a5;font-size:.78rem;margin-top:4px}
+.form-hint{font-size:.75rem;color:var(--muted);margin-top:4px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-section{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-b);padding-bottom:8px;border-bottom:1px solid var(--border2);margin:24px 0 16px}
+.mentor-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:22px;display:flex;flex-direction:column;gap:14px;transition:all .25s;cursor:pointer}
+.mentor-card:hover{border-color:rgba(59,130,246,.4);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.4),0 0 0 1px rgba(59,130,246,.12)}
+.mc-top{display:flex;gap:12px;align-items:center}
+.mc-av{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.mc-av img{width:100%;height:100%;object-fit:cover}
+.mc-name{font-weight:700;font-size:.92rem;margin-bottom:2px}
+.mc-loc{font-size:.78rem;color:var(--muted)}
+.mc-stars{color:#f59e0b;font-size:.78rem;margin-top:2px}
+.mc-price{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(29,78,216,.12));border:1px solid rgba(59,130,246,.15);border-radius:12px;padding:11px 14px}
+.mc-price-n{font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:800;color:var(--blue-b)}
+.mc-price-s{font-size:.7rem;color:var(--muted);margin-top:2px}
+.mc-btn{display:flex;align-items:center;justify-content:center;padding:9px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border2);font-size:.82rem;font-weight:600;color:var(--text);transition:all .2s}
+.mc-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+.site-footer{background:var(--surface);border-top:1px solid var(--border);padding:56px 0 28px;position:relative;z-index:1}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px}
+.foot-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:10px}
+.foot-logo .dot{color:var(--orange)}
+.foot-brand p{color:var(--muted);font-size:.85rem;line-height:1.7;max-width:260px}
+.foot-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:14px}
+.foot-col a{display:block;color:var(--muted);font-size:.875rem;padding:4px 0;transition:color .2s}
+.foot-col a:hover{color:var(--text)}
+.foot-bottom{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+@media(max-width:1000px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-mobile-open{display:flex!important;flex-direction:column;position:fixed;top:76px;left:12px;right:12px;background:rgba(13,17,23,.98);border:1px solid var(--border2);border-radius:20px;padding:12px;z-index:999;gap:2px}
+  .nav-mobile-open a{color:var(--text)!important;padding:10px 14px!important;border-radius:10px}
+  .footer-grid{grid-template-columns:1fr;gap:28px}
+  .foot-bottom{flex-direction:column;gap:6px;text-align:center}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){.container{padding:0 14px}.sec{padding:52px 0}}
+{% block extra_css %}{% endblock %}
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+{% if messages %}
+<div class="msg-wrap">
+  {% for message in messages %}
+  <div class="msg {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Edu<span class="dot">Bridge</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="/mentorlar/" data-i18n="nav.mentors">Mentorlar</a>
+      <a href="/kurs/ielts/">IELTS</a>
+      <a href="/kurs/sat/">SAT</a>
+      <a href="/free-darslar/" data-i18n="nav.free">Bepul darslar</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn" id="lb-uz" onclick="i18n.set('uz')">UZ</button>
+        <button class="lang-btn" id="lb-en" onclick="i18n.set('en')">EN</button>
+        <button class="lang-btn" id="lb-ru" onclick="i18n.set('ru')">RU</button>
+      </div>
+
+      {% if user.is_authenticated %}
+        <span class="nav-user"><span data-i18n="nav.hello">Salom,</span> <strong>{{ user.first_name|default:user.username }}</strong></span>
+        {% if user.mentor_profile %}
+          <a href="{% url 'mentor_profil' user.mentor_profile.pk %}" class="btn btn-ghost btn-sm" data-i18n="nav.profile">Profilim</a>
+        {% elif user.student_profile %}
+          <a href="{% url 'student_profil' user.student_profile.pk %}" class="btn btn-ghost btn-sm" data-i18n="nav.profile">Profilim</a>
+        {% endif %}
+        <a href="/chiqish/" class="btn btn-red btn-sm" data-i18n="nav.logout">Chiqish</a>
+      {% else %}
+        <a href="/kirish/" class="btn btn-ghost btn-sm" data-i18n="nav.login">Kirish</a>
+        <a href="/mentor/royxat/" class="btn btn-ghost btn-sm" data-i18n="nav.become_mentor">Mentor bo'lish</a>
+        <a href="/student/royxat/" class="btn btn-primary btn-sm" data-i18n="nav.start">Boshlash →</a>
+      {% endif %}
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </nav>
+</div>
+
+<div class="page-body">
+{% block content %}{% endblock %}
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <div class="foot-logo">Edu<span class="dot">Bridge</span></div>
+        <p data-i18n="footer.desc">O'zbekistonning har bir viloyatidagi eng yaxshi IELTS va SAT mentorlarini bog'lovchi platforma.</p>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="footer.directions">Yo'nalishlar</h4>
+        <a href="/kurs/ielts/" data-i18n="footer.ielts">IELTS kursi</a>
+        <a href="/kurs/sat/" data-i18n="footer.sat">SAT kursi</a>
+        <a href="/mentorlar/" data-i18n="footer.all_mentors">Barcha mentorlar</a>
+        <a href="/free-darslar/" data-i18n="nav.free">Bepul darslar</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="footer.account">Hisob</h4>
+        <a href="/student/royxat/" data-i18n="footer.student">O'quvchi bo'lish</a>
+        <a href="/mentor/royxat/" data-i18n="footer.become_mentor">Mentor bo'lish</a>
+        <a href="/kirish/" data-i18n="footer.login">Kirish</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="footer.copy">© 2025 EduBridge. Barcha huquqlar himoyalangan.</span>
+      <span>🇺🇿 O'zbekiston</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('ham').addEventListener('click',function(){
+  document.getElementById('navLinks').classList.toggle('nav-mobile-open');
+});
+setTimeout(()=>{
+  document.querySelectorAll('.msg').forEach(m=>{
+    m.style.transition='opacity .5s';m.style.opacity='0';
+    setTimeout(()=>m.remove(),500);
+  });
+},4000);
+</script>
+{% block extra_js %}{% endblock %}
+
+<!-- i18n ENGINE -->
+<script>
+const i18n = {
+  data: {},
+  lang: 'uz',
+
+  async load() {
+    try {
+      const r = await fetch('/static/translations.json');
+      this.data = await r.json();
+    } catch(e) { this.data = {uz:{},en:{},ru:{}}; }
+  },
+
+  t(key) {
+    return (this.data[this.lang] || {})[key]
+        || (this.data['uz'] || {})[key]
+        || key;
+  },
+
+  apply() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = this.t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      el.placeholder = this.t(el.getAttribute('data-i18n-ph'));
+    });
+    ['uz','en','ru'].forEach(l => {
+      const b = document.getElementById('lb-' + l);
+      if(b) b.classList.toggle('active', l === this.lang);
+    });
+  },
+
+  set(lang) {
+    this.lang = lang;
+    localStorage.setItem('eb_lang', lang);
+    this.apply();
+  },
+
+  async init() {
+    await this.load();
+    this.lang = localStorage.getItem('eb_lang') || 'uz';
+    this.apply();
+  }
+};
+i18n.init();
+</script>
+</body>
+</html>

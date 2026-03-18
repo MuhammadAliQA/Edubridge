@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}{{ student.user.get_full_name }} — O'quvchi profili{% endblock %}
+
+{% block extra_css %}
+<style>
+.profil-wrap{padding:40px 0 80px}
+.profil-hero{background:linear-gradient(135deg,rgba(249,115,22,.1),rgba(234,88,12,.06));border:1px solid rgba(249,115,22,.15);border-radius:var(--r2);padding:32px;display:flex;gap:24px;align-items:center;margin-bottom:28px}
+.big-av{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg,#ea580c,#f97316)}
+.big-av img{width:100%;height:100%;object-fit:cover}
+.profil-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.profil-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:.82rem;color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:16px}
+.section-card h2{font-size:.95rem;font-weight:700;margin-bottom:16px;color:var(--text)}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.875rem}
+.info-row:last-child{border-bottom:none}
+.info-row span{color:var(--muted)}
+.info-row strong{color:var(--text)}
+.enroll-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.enroll-name{font-weight:600;font-size:.875rem}
+.enroll-dir{font-size:.78rem;color:var(--muted);margin-top:2px}
+.status-ok{font-size:.75rem;font-weight:700;color:#86efac}
+.status-wait{font-size:.75rem;font-weight:700;color:#fdba74}
+.empty-enroll{text-align:center;padding:32px;color:var(--muted);font-size:.875rem}
+.empty-enroll a{color:var(--blue-b)}
+@media(max-width:900px){
+  .grid-2{grid-template-columns:1fr}
+  .profil-hero{flex-direction:column;text-align:center}
+  .profil-meta{justify-content:center}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profil-wrap">
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="profil-hero">
+      <div class="big-av">
+        {% if student.rasm %}<img src="{{ student.rasm.url }}" alt="">{% else %}{{ student.user.first_name|first }}{{ student.user.last_name|first }}{% endif %}
+      </div>
+      <div>
+        <h1>{{ student.user.get_full_name }}</h1>
+        <div class="profil-meta">
+          <span>📍 {{ student.get_yashash_joyi_display }}</span>
+          <span>·</span>
+          <span>🎂 {{ student.yosh }} yosh</span>
+          <span>·</span>
+          <span>🎓 {{ student.o_qish_joyi }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid-2">
+      <div>
+        <div class="section-card">
+          <h2>👤 <span data-i18n="profil.info">Ma'lumotlar</span></h2>
+          <div class="info-row"><span>Email</span><strong>{{ student.user.email }}</strong></div>
+          <div class="info-row"><span data-i18n="profil.age">Yoshi</span><strong>{{ student.yosh }}</strong></div>
+          <div class="info-row"><span data-i18n="profil.school">O'qish joyi</span><strong>{{ student.o_qish_joyi }}</strong></div>
+          <div class="info-row"><span data-i18n="profil.location">Yashash joyi</span><strong>{{ student.get_yashash_joyi_display }}</strong></div>
+        </div>
+
+        <div class="section-card">
+          <h2>💭 <span data-i18n="profil.goals">Maqsadlar</span></h2>
+          <p style="font-size:.875rem;color:var(--muted);line-height:1.75">{{ student.kutish }}</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-card">
+          <h2>🎓 <span data-i18n="profil.enrolled">Yozilgan kurslar</span>
+            <span style="background:var(--surface2);border:1px solid var(--border);border-radius:50px;padding:2px 10px;font-size:.72rem;font-weight:600;color:var(--muted)">{{ enrollments.count }}</span>
+          </h2>
+          {% for e in enrollments %}
+          <div class="enroll-item">
+            <div>
+              <div class="enroll-name">{{ e.mentor.user.get_full_name }}</div>
+              <div class="enroll-dir">{{ e.get_yonalish_display }}</div>
+            </div>
+            {% if e.to_langan %}
+              <span class="status-ok" data-i18n="profil.paid">✅ To'langan</span>
+            {% else %}
+              <span class="status-wait" data-i18n="profil.pending">⏳ Kutilmoqda</span>
+            {% endif %}
+          </div>
+          {% empty %}
+          <div class="empty-enroll">
+            <p data-i18n="profil.no_courses">Hali kursga yozilmadingiz.</p><p><br><a href="/mentorlar/">Mentor tanlash →</a></p>
+          </div>
+          {% endfor %}
+          <a href="/mentorlar/" class="btn btn-primary btn-full" style="border-radius:12px;padding:11px;margin-top:8px" data-i18n="profil.find_mentor">🔍 Mentor tanlash →</a>
+        </div>
+
+        <div class="section-card" style="background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.15)">
+          <h2 style="color:#86efac">🆓 <span data-i18n="profil.free_title">Bepul darslar</span></h2>
+          <p style="font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:12px" data-i18n="profil.free_student_desc">Haftada bir marta bepul IELTS va SAT darslariga qatnashing!</p>
+          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="pricing.free_btn">Ko'rish</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
