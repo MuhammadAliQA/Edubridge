@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}EduBridge — IELTS, SAT & Ingliz tili{% endblock %}
+{% block title %}EduBridge — IELTS, SAT & Admission Programme{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -8,7 +8,8 @@
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);padding:6px 16px;border-radius:50px;font-size:.78rem;font-weight:600;color:var(--blue-b);animation:fadeUp .6s ease both}
 .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite;flex-shrink:0}
 .hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.6rem,6vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:20px;animation:fadeUp .6s .1s ease both;text-align:center;width:100%}
-.line2{display:block;color:var(--orange);text-align:center}
+.line-ielts{display:block;text-align:center;background:linear-gradient(90deg,#E2001A,#FF4D4D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.line-sat{display:block;text-align:center;background:linear-gradient(90deg,#009CDE,#74C7F0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .line3{display:block;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
 .hero-sub{font-size:1rem;color:var(--muted);max-width:540px;margin:0 auto 36px;line-height:1.75;animation:fadeUp .6s .2s ease both;text-align:center}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
@@ -29,22 +30,42 @@
 .tab-bar{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border2);border-radius:50px;padding:3px;width:fit-content;margin:0 auto 36px}
 .tab-btn{padding:8px 22px;border-radius:50px;font-size:.82rem;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
 .tab-btn.active{background:var(--blue);color:#fff;box-shadow:0 2px 12px rgba(59,130,246,.4)}
+.tab-btn.active[onclick*="ielts"]{background:#E2001A;box-shadow:0 2px 12px rgba(226,0,26,.4)}
+.tab-btn.active[onclick*="sat"]{background:#009CDE;box-shadow:0 2px 12px rgba(0,156,222,.4)}
 .tab-pane{display:none}
 .tab-pane.active{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .empty-tab{grid-column:1/-1;text-align:center;padding:56px;color:var(--muted);font-size:.875rem}
 .empty-tab a{color:var(--blue-b)}
 .pricing-sec{padding:80px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:920px;margin:0 auto}
-.price-card{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r2);padding:28px;display:flex;flex-direction:column;gap:14px;transition:all .2s}
-.price-card:hover{border-color:rgba(59,130,246,.3);transform:translateY(-2px)}
-.price-card.featured{border-color:rgba(59,130,246,.4);background:linear-gradient(145deg,rgba(59,130,246,.07),rgba(29,78,216,.04));position:relative;transform:scale(1.03);box-shadow:0 0 0 1px rgba(59,130,246,.2),0 16px 40px rgba(0,0,0,.4)}
-.price-card.featured::before{content:'⭐ Top';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.68rem;font-weight:800;padding:3px 12px;border-radius:50px;white-space:nowrap}
-.price-icon{font-size:1.8rem}
-.price-card h3{font-size:.9rem;font-weight:700}
-.price-num{font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;font-weight:800;color:var(--blue-b)}
-.price-period{font-size:.75rem;color:var(--muted)}
-.price-desc{font-size:.82rem;color:var(--muted);line-height:1.6;flex:1}
-.price-btn{display:flex;align-items:center;justify-content:center;padding:11px;border-radius:10px;font-size:.85rem;font-weight:700;transition:all .2s;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:680px;margin:0 auto}
+.price-card{background:var(--bg);border:1px solid var(--border2);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:20px;position:relative;transition:transform .2s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border-color:rgba(59,130,246,.35);background:linear-gradient(160deg,rgba(59,130,246,.06) 0%,var(--bg) 60%)}
+.price-card.featured::before{content:'⭐ Eng ko\'p tanlangan';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.68rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:50px;width:fit-content}
+.badge-free{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.badge-premium{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.25)}
+.plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-top:4px}
+.plan-sub{font-size:.82rem;color:var(--muted);margin-top:4px}
+.plan-price{display:flex;align-items:baseline;gap:6px}
+.price-big{font-family:'Bricolage Grotesque',sans-serif;font-size:2.8rem;font-weight:800;line-height:1}
+.price-big-free{color:#4ade80}
+.price-big-premium{color:var(--blue-b)}
+.price-period{font-size:.78rem;color:var(--muted)}
+.price-divider{height:1px;background:var(--border)}
+.price-features{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;flex:1}
+.price-features li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text)}
+.price-features li.feat-off{color:var(--muted)}
+.feat-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.feat-on-green{background:rgba(34,197,94,.15);color:#4ade80}
+.feat-on-blue{background:rgba(59,130,246,.15);color:#60a5fa}
+.feat-off-icon{background:rgba(255,255,255,.05);color:var(--muted2)}
+.price-footer{margin-top:4px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--muted)}
+.price-btn{display:flex;align-items:center;justify-content:center;padding:13px;border-radius:14px;font-size:.9rem;font-weight:700;transition:all .2s;cursor:pointer;font-family:inherit;text-decoration:none;letter-spacing:.01em}
+.pb-green-new{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.pb-green-new:hover{background:rgba(34,197,94,.2)}
+.pb-blue-new{background:var(--blue);color:#fff;box-shadow:0 0 24px rgba(59,130,246,.3);border:none}
+.pb-blue-new:hover{background:#2563eb;box-shadow:0 0 32px rgba(59,130,246,.45);transform:translateY(-1px)}
 .pb-blue{background:var(--blue);color:#fff}.pb-blue:hover{background:#2563eb;transform:translateY(-1px)}
 .pb-green{background:var(--green);color:#fff}.pb-green:hover{background:#16a34a;transform:translateY(-1px)}
 .pb-orange{background:var(--orange);color:#fff}.pb-orange:hover{background:#ea580c;transform:translateY(-1px)}
@@ -66,17 +87,41 @@
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.5;transform:scale(.8)}}
 @media(max-width:900px){
   .steps-grid{grid-template-columns:1fr 1fr}
-  .tab-pane.active{grid-template-columns:1fr}
-  .pricing-grid{grid-template-columns:1fr;max-width:380px}.price-card.featured{transform:none}
-  .free-banner{grid-template-columns:1fr}.free-btns{flex-direction:row}
-  .hero-stats{flex-wrap:wrap;display:flex}
-  .hstat{padding:16px 20px;border-right:none;border-bottom:1px solid var(--border)}
+  .tab-pane.active{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr;max-width:420px}.price-card.featured{transform:none}
+  .free-banner{grid-template-columns:1fr}.free-btns{flex-direction:row;flex-wrap:wrap}
+  .hero-stats{flex-wrap:wrap;display:flex;width:100%;border-radius:16px}
+  .hstat{padding:14px 16px;border-right:none;border-bottom:1px solid var(--border);flex:1 1 40%}
   .hstat:last-child{border-bottom:none}
+  .tab-bar{width:100%;justify-content:center}
+  .hero h1{font-size:clamp(2rem,7vw,3.5rem);letter-spacing:-1px}
 }
 @media(max-width:600px){
   .steps-grid{grid-template-columns:1fr}
-  .free-banner{padding:28px 20px}
-  .cta-inner{padding:36px 20px}
+  .tab-pane.active{grid-template-columns:1fr}
+  .free-banner{padding:28px 18px;gap:24px}
+  .free-h{font-size:1.4rem}
+  .free-btns{flex-direction:column;width:100%}
+  .free-btns .btn{width:100%;text-align:center}
+  .cta-inner{padding:32px 16px}
+  .cta-btns{flex-direction:column;align-items:center}
+  .cta-btns .btn{width:100%;max-width:300px}
+  .hero{padding:60px 16px 40px}
+  .hero h1{font-size:clamp(1.8rem,9vw,2.8rem);letter-spacing:-1px}
+  .hero-sub{font-size:.9rem;padding:0 8px}
+  .hero-actions{flex-direction:column;align-items:center;width:100%}
+  .hero-actions .btn{width:100%;max-width:280px;justify-content:center}
+  .hero-stats{width:100%;border-radius:14px;margin-top:36px}
+  .hstat{flex:1 1 45%;padding:12px 10px}
+  .hstat-n{font-size:1.4rem}
+  .hstat-l{font-size:.62rem}
+  .tab-bar{width:100%;border-radius:14px;padding:4px}
+  .tab-btn{flex:1;text-align:center;padding:8px 6px;font-size:.78rem}
+  .pricing-grid{max-width:100%}
+  .price-card.featured::before{font-size:.62rem}
+  .mentor-card{padding:16px}
+  .sec-h{font-size:1.4rem}
+  .free-pill{font-size:.7rem}
 }
 </style>
 {% endblock %}
@@ -94,22 +139,23 @@
 
   <h1>
     <span data-i18n="hero.title">Bilim ko'prigidan o'ting</span>
-    <span class="line2">IELTS. SAT.</span>
-    <span class="line3" data-i18n="hero.line3">Ingliz tili.</span>
+    <span class="line-ielts">IELTS</span>
+    <span class="line-sat">SAT</span>
+    <span class="line3" data-i18n="hero.line3">Admission Programme</span>
   </h1>
 
-  <p class="hero-sub" data-i18n="hero.sub">Top mentorlar bilan haftada 3 ta dars, 3 soatdan. O'zbekistonning istalgan viloyatidan — online, sifatli, arzon.</p>
+  <p class="hero-sub" data-i18n="hero.sub">Top mentorlar bilan haftada 3 ta konsultatsiya, 1.5 soatdan. O'zbekistonning istalgan viloyatidan — online, sifatli, arzon.</p>
 
   <div class="hero-actions">
     <a href="#mentors" class="btn btn-primary">🎓 <span data-i18n="hero.btn_mentor">Mentor tanlash</span></a>
-    <a href="/free-darslar/" class="btn btn-ghost">🆓 <span data-i18n="hero.btn_free">Bepul darslar</span></a>
+    <a href="/free-darslar/" class="btn btn-ghost">🆓 <span data-i18n="hero.btn_free">Bepul konsultatsiya</span></a>
   </div>
 
   <div style="display:flex;justify-content:center;width:100%"><div class="hero-stats">
     <div class="hstat"><span class="hstat-n">12</span><span class="hstat-l" data-i18n="hero.stat_region">Viloyat</span></div>
     <div class="hstat"><span class="hstat-n">3</span><span class="hstat-l" data-i18n="hero.stat_subject">Yo'nalish</span></div>
-    <div class="hstat"><span class="hstat-n">300K</span><span class="hstat-l" data-i18n="hero.stat_price">so'm / hafta</span></div>
-    <div class="hstat"><span class="hstat-n">1.5h</span><span class="hstat-l" data-i18n="hero.stat_free">Bepul darslar</span></div>
+    <div class="hstat"><span class="hstat-n">300K</span><span class="hstat-l" data-i18n="hero.stat_price">so'm / oy</span></div>
+    <div class="hstat"><span class="hstat-n">1h</span><span class="hstat-l" data-i18n="hero.stat_free">Bepul</span></div>
   </div></div>
 </section>
 
@@ -122,8 +168,8 @@
     </div>
     <div class="steps-grid">
       <div class="step"><div class="step-num">01</div><h3 data-i18n="how.s1_title">Ro'yxatdan o'ting</h3><p data-i18n="how.s1_desc">O'quvchi sifatida profilingizni yarating.</p></div>
-      <div class="step"><div class="step-num">02</div><h3 data-i18n="how.s2_title">Mentor tanlang</h3><p data-i18n="how.s2_desc">IELTS, SAT yoki Ingliz tili bo'yicha mentor tanlang.</p></div>
-      <div class="step"><div class="step-num">03</div><h3 data-i18n="how.s3_title">Kursga yoziling</h3><p data-i18n="how.s3_desc">Haftada 3 ta dars, 3 soatdan — 300,000 so'm.</p></div>
+      <div class="step"><div class="step-num">02</div><h3 data-i18n="how.s2_title">Mentor tanlang</h3><p data-i18n="how.s2_desc">IELTS, SAT yoki Admission Programme bo'yicha mentor tanlang.</p></div>
+      <div class="step"><div class="step-num">03</div><h3 data-i18n="how.s3_title">Konsultatsiyaga yoziling</h3><p data-i18n="how.s3_desc">Haftada 3 ta konsultatsiya, 1.5 soatdan — 300,000 so'm/oy.</p></div>
       <div class="step"><div class="step-num">04</div><h3 data-i18n="how.s4_title">Natijaga erishing</h3><p data-i18n="how.s4_desc">Mentor bilan ishlang, maqsad ballingizga erishing.</p></div>
     </div>
   </div>
@@ -135,13 +181,13 @@
     <div class="sec-head">
       <div class="sec-tag" data-i18n="mentors.tag">Top mentorlar</div>
       <h2 class="sec-h" data-i18n="mentors.title">3 ta yo'nalish bo'yicha</h2>
-      <p class="sec-p" data-i18n="mentors.sub">Haftada 3 ta dars · 3 soatdan · 300,000 so'm</p>
+      <p class="sec-p" data-i18n="mentors.sub">Haftada 3 ta konsultatsiya · 1.5 soatdan · 300,000 so'm/oy</p>
     </div>
 
     <div class="tab-bar">
       <button class="tab-btn active" onclick="showTab('ielts',this)">🎯 IELTS</button>
       <button class="tab-btn" onclick="showTab('sat',this)">📐 SAT</button>
-      <button class="tab-btn" onclick="showTab('en',this)">🌍 <span data-i18n="mentors.tab_en">Ingliz tili</span></button>
+      <button class="tab-btn" onclick="showTab('en',this)">🎓 <span data-i18n="mentors.tab_en">Admission</span></button>
     </div>
 
     <!-- IELTS -->
@@ -149,7 +195,7 @@
       {% for mentor in top_ielts %}
       <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
         <div class="mc-top">
-          <div class="mc-av" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">
+          <div class="mc-av" style="background:linear-gradient(135deg,#b5000f,#E2001A)">
             {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
           </div>
           <div>
@@ -165,7 +211,7 @@
         </div>
         <div class="mc-price">
           <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
@@ -181,7 +227,7 @@
       {% for mentor in top_sat %}
       <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
         <div class="mc-top">
-          <div class="mc-av" style="background:linear-gradient(135deg,#be185d,#ec4899)">
+          <div class="mc-av" style="background:linear-gradient(135deg,#0077aa,#009CDE)">
             {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
           </div>
           <div>
@@ -197,7 +243,7 @@
         </div>
         <div class="mc-price">
           <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
@@ -208,7 +254,7 @@
       {% endfor %}
     </div>
 
-    <!-- INGLIZ TILI -->
+    <!-- ADMISSION -->
     <div class="tab-pane" id="tab-en">
       {% for mentor in top_ingliz %}
       <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
@@ -223,18 +269,18 @@
           </div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-          <span class="badge badge-ingliz_tili">Ingliz tili</span>
+          <span class="badge badge-ingliz_tili">Admission</span>
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
           <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
       {% empty %}
       <div class="empty-tab">
-        <p>Hozircha Ingliz tili mentorlari yo'q. <a href="/mentor/royxat/">Birinchi mentor bo'ling!</a></p>
+        <p>Hozircha Admission mentorlari yo'q. <a href="/mentor/royxat/">Birinchi mentor bo'ling!</a></p>
       </div>
       {% endfor %}
     </div>
@@ -253,30 +299,51 @@
       <h2 class="sec-h" data-i18n="pricing.title">Shaffof narx siyosati</h2>
     </div>
     <div class="pricing-grid">
+
+      <!-- BEPUL -->
       <div class="price-card">
-        <div class="price-icon">🆓</div>
-        <h3 data-i18n="pricing.free_title">Bepul darslar</h3>
-        <div class="price-num">0</div>
-        <div class="price-period" data-i18n="pricing.free_period">haftada 1 marta</div>
-        <p class="price-desc" data-i18n="pricing.free_desc">IELTS va SAT bo'yicha haftada 1 marta 1.5 soatlik bepul onlayn dars.</p>
-        <a href="/free-darslar/" class="price-btn pb-green" data-i18n="pricing.free_btn">Ko'rish</a>
+        <div class="plan-badge badge-free">🆓 <span data-i18n="pricing.free_badge">Bepul</span></div>
+        <div>
+          <div class="plan-name" data-i18n="pricing.free_title">Free</div>
+          <div class="plan-sub" data-i18n="pricing.free_sub">Bir martalik konsultatsiya</div>
+        </div>
+        <div class="plan-price">
+          <span class="price-big price-big-free">0</span>
+          <span class="price-period" data-i18n="pricing.free_currency">so'm</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><span class="feat-icon feat-on-green">✓</span> <span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
+          <li><span class="feat-icon feat-on-green">✓</span> <span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
+          <li class="feat-off"><span class="feat-icon feat-off-icon">✕</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
+          <li class="feat-off"><span class="feat-icon feat-off-icon">✕</span> <span data-i18n="pricing.feat_weekly">Haftada 3 × 1.5 soat</span></li>
+          <li class="price-footer">⏱ <span data-i18n="pricing.free_footer">1 soat · bir marta</span></li>
+        </ul>
+        <a href="/free-darslar/" class="price-btn pb-green-new" data-i18n="pricing.free_btn">Bepul boshlash →</a>
       </div>
+
+      <!-- PREMIUM -->
       <div class="price-card featured">
-        <div class="price-icon">🎓</div>
-        <h3 data-i18n="pricing.student_title">O'quvchi uchun</h3>
-        <div class="price-num">300,000</div>
-        <div class="price-period" data-i18n="pricing.student_period">so'm / hafta</div>
-        <p class="price-desc" data-i18n="pricing.student_desc">Haftada 3 ta dars · 3 soatdan. IELTS · SAT · Ingliz tili.</p>
-        <a href="/student/royxat/" class="price-btn pb-blue" data-i18n="pricing.student_btn">Boshlash</a>
+        <div class="plan-badge badge-premium">💎 <span data-i18n="pricing.premium_badge">Premium</span></div>
+        <div>
+          <div class="plan-name" data-i18n="pricing.student_title">Premium</div>
+          <div class="plan-sub" data-i18n="pricing.premium_sub">To'liq konsultatsiya paketi</div>
+        </div>
+        <div class="plan-price">
+          <span class="price-big price-big-premium">300,000</span>
+          <span class="price-period" data-i18n="pricing.student_period">so'm / oy</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
+          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
+          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
+          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_weekly">Haftada 3 × 1.5 soat</span></li>
+          <li class="price-footer">⚡ <span data-i18n="pricing.premium_footer">Oyiga 18 soat konsultatsiya</span></li>
+        </ul>
+        <a href="/student/royxat/" class="price-btn pb-blue-new" data-i18n="pricing.student_btn">Premium boshlash →</a>
       </div>
-      <div class="price-card">
-        <div class="price-icon">💼</div>
-        <h3 data-i18n="pricing.mentor_title">Mentor uchun</h3>
-        <div class="price-num">200,000</div>
-        <div class="price-period" data-i18n="pricing.mentor_period">so'm / o'quvchi / hafta</div>
-        <p class="price-desc" data-i18n="pricing.mentor_desc">Har bir o'quvchi uchun 200,000 so'm daromad.</p>
-        <a href="/mentor/royxat/" class="price-btn pb-orange" data-i18n="pricing.mentor_btn">Mentor bo'lish</a>
-      </div>
+
     </div>
   </div>
 </section>
@@ -287,18 +354,18 @@
     <div class="free-banner">
       <div>
         <div class="sec-tag" style="display:block;margin-bottom:10px" data-i18n="free.tag">Bepul</div>
-        <h2 class="free-h">🆓 <span data-i18n="free.title">Bepul IELTS va SAT darslari</span></h2>
-        <p class="free-p" data-i18n="free.desc">Har hafta mentorlarimiz bepul onlayn dars o'tkazadi. 1.5 soat, real savollar. Ro'yxatdan o'tmasdan ham qatnashingiz mumkin.</p>
+        <h2 class="free-h">🆓 <span data-i18n="free.title">Bepul IELTS, SAT va Admission konsultatsiyasi</span></h2>
+        <p class="free-p" data-i18n="free.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS, SAT yoki Admission Programme — birini tanlang. Ro'yxatdan o'tmasdan ham qatnashingiz mumkin.</p>
         <div class="free-pills">
-          <span class="free-pill">📅 <span data-i18n="free.pill_week">Haftada 1 marta</span></span>
-          <span class="free-pill">⏱ 1.5h</span>
+          <span class="free-pill">🎯 <span data-i18n="free.pill_once">Bir martalik</span></span>
+          <span class="free-pill">⏱ 1 soat</span>
           <span class="free-pill">💻 Online</span>
           <span class="free-pill">🆓 <span data-i18n="free.pill_free">Bepul</span></span>
         </div>
       </div>
       <div class="free-btns">
-        <a href="/free-darslar/" class="btn btn-primary btn-lg" data-i18n="free.btn_view">Darslarni ko'rish →</a>
-        <a href="/mentor/royxat/" class="btn btn-ghost btn-lg" data-i18n="free.btn_teach">Dars o'tkazish</a>
+        <a href="/free-darslar/" class="btn btn-primary btn-lg" data-i18n="free.btn_view">Konsultatsiyani ko'rish →</a>
+        <a href="/mentor/royxat/" class="btn btn-ghost btn-lg" data-i18n="free.btn_teach">Konsultatsiya berish</a>
       </div>
     </div>
   </div>
