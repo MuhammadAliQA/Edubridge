@@ -54,13 +54,13 @@ def mentorlar(request):
 
 
 def free_darslar(request):
-    darslar = FreeDars.objects.all().order_by('sana')
+    darslar = FreeDars.objects.all().order_by('-sana')
     return render(request, 'courses/free_darslar.html', {'darslar': darslar})
 
 
 def mentor_detail(request, pk):
     mentor = get_object_or_404(MentorProfile, pk=pk, tasdiqlangan=True)
-    return render(request, 'courses/mentor_detail.html', {'mentor': mentor})
+    return render(request, 'accounts/mentor_profil.html', {'mentor': mentor})
 
 
 def ielts_sahifa(request):
@@ -75,3 +75,7 @@ def sat_sahifa(request):
         yonalish='sat', tasdiqlangan=True
     ).order_by('-reytinq')
     return render(request, 'courses/sat.html', {'mentorlar': mentorlar})
+
+
+def scholarship(request):
+    return render(request, 'courses/scholarship.html')

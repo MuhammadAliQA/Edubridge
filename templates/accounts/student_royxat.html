@@ -5,8 +5,7 @@
 <style>
 .auth-wrap{padding:48px 20px 80px;width:100%;display:flex;justify-content:center}
 .auth-box{width:100%;max-width:540px;margin:0 auto}
-.auth-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px}
-.auth-logo .dot{color:var(--orange)}
+.auth-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px;display:inline-block;width:100%;background:linear-gradient(135deg,#38bdf8 0%,#818cf8 50%,#c084fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .auth-title{text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:4px}
 .auth-sub{text-align:center;color:var(--muted);font-size:.875rem;margin-bottom:24px}
 .benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
@@ -14,20 +13,21 @@
 .auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:28px}
 .auth-switch{text-align:center;margin-top:20px;font-size:.82rem;color:var(--muted)}
 .auth-switch a{color:var(--blue-b);font-weight:600}
+@media(max-width:480px){.benefits{grid-template-columns:1fr}}
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="auth-wrap">
   <div class="auth-box">
-    <div class="auth-logo">Edu<span class="dot">Bridge</span></div>
+    <div class="auth-logo">EduBridge</div>
     <div class="auth-title" data-i18n="student_reg.title">O'quvchi bo'lish</div>
-    <div class="auth-sub" data-i18n="student_reg.sub">Top mentorlar bilan IELTS, SAT va ingliz tilini o'rganing</div>
+    <div class="auth-sub" data-i18n="student_reg.sub">Top mentorlar bilan IELTS, SAT va Admission Programme bo'yicha tayyorlaning</div>
 
     <div class="benefits">
       <div class="benefit">🎯 <span data-i18n="student_reg.b1">Top mentorlar tanlash</span></div>
-      <div class="benefit">📅 <span data-i18n="student_reg.b2">Haftada 3 dars, 3 soatdan</span></div>
-      <div class="benefit">🆓 <span data-i18n="student_reg.b3">Bepul darslar mavjud</span></div>
+      <div class="benefit">📅 <span data-i18n="student_reg.b2">Haftada 3 konsultatsiya, 1.5 soatdan</span></div>
+      <div class="benefit">🆓 <span data-i18n="student_reg.b3">Bepul konsultatsiya mavjud</span></div>
       <div class="benefit">🏆 <span data-i18n="student_reg.b4">Maqsad balingizga erishing</span></div>
     </div>
 

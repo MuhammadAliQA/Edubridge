@@ -1,8 +1,6 @@
 from pathlib import Path
 import os
-from pathlib import Path
 
-# .env faylni o'qish (lokal uchun)
 try:
     from dotenv import load_dotenv
     load_dotenv(Path(__file__).resolve().parent.parent / '.env')
@@ -15,7 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-edubridge-change-in-p
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -114,6 +112,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Sayt", "url": "/", "new_window": True},
         {"name": "Mentorlar", "url": "/mentorlar/", "new_window": True},
+        {"name": "Programs", "url": "/scholarship/", "new_window": True},
     ],
 
     "usermenu_links": [
@@ -167,7 +166,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
     "theme": "darkly",
-    "dark_mode_theme": "darkly",
+    "default_theme_mode": "dark",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",

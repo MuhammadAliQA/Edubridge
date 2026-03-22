@@ -24,9 +24,10 @@
 .stat-box{flex:1;background:var(--surface2);border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border)}
 .stat-box .n{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue-b);display:block}
 .stat-box .l{font-size:.7rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
-.price-big{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(29,78,216,.06));border:1px solid rgba(59,130,246,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:12px}
-.price-big .pn{font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;color:var(--blue-b)}
-.price-big .ps{font-size:.75rem;color:var(--muted);margin-top:3px}
+.price-block{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(29,78,216,.04));border:1px solid rgba(59,130,246,.2);border-radius:20px;padding:20px;margin-bottom:12px}
+.price-block .plan-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:50px;padding:3px 10px;font-size:.68rem;font-weight:700;color:#60a5fa;margin-bottom:12px}
+.price-block .pn{font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;font-weight:800;color:var(--blue-b);line-height:1}
+.price-block .ps{font-size:.75rem;color:var(--muted);margin-top:4px}
 .free-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:14px;padding:16px;margin-bottom:12px}
 .free-box h4{font-size:.85rem;font-weight:700;color:#86efac;margin-bottom:6px}
 .free-box p{font-size:.8rem;color:var(--muted);line-height:1.6}
@@ -34,6 +35,10 @@
 .info-row:last-child{border-bottom:none}
 .info-row span{color:var(--muted)}
 .info-row strong{color:var(--text)}
+.price-feats{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:7px}
+.price-feats li{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text)}
+.pcheck{width:16px;height:16px;border-radius:50%;border:1.5px solid #60a5fa;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pcheck svg{width:8px;height:8px}
 @media(max-width:900px){
   .grid-2{grid-template-columns:1fr}
   .profil-hero{flex-direction:column;align-items:center;text-align:center}
@@ -49,7 +54,10 @@
 
     <!-- HERO -->
     <div class="profil-hero">
-      <div class="big-av" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">
+      <div class="big-av" style="
+        {% if mentor.yonalish == 'ielts' %}background:linear-gradient(135deg,#b5000f,#E2001A)
+        {% elif mentor.yonalish == 'sat' %}background:linear-gradient(135deg,#0077aa,#009CDE)
+        {% else %}background:linear-gradient(135deg,#0f766e,#14b8a6){% endif %}">
         {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
       </div>
       <div>
@@ -57,7 +65,7 @@
         <div class="profil-meta">
           <span>📍 {{ mentor.get_viloyat_display }}</span>
           <span>·</span>
-          <span>⏱ {{ mentor.tajriba_yil }} yil tajriba</span>
+          <span>⏱ {{ mentor.tajriba_yil }} <span data-i18n="mentors.year">yil</span> tajriba</span>
           <span>·</span>
           <span>⭐ {{ mentor.reytinq|floatformat:1 }} reyting</span>
           <span>·</span>
@@ -97,7 +105,7 @@
             <div class="a">{{ mentor.muvaffaqiyat }}</div>
           </div>
           <div class="q-item">
-            <div class="q" data-i18n="profil.q4">04 · Dars vaqtlari?</div>
+            <div class="q" data-i18n="profil.q4">04 · Konsultatsiya vaqtlari?</div>
             <div class="a">{{ mentor.vaqt }}</div>
           </div>
           <div class="q-item">
@@ -110,19 +118,26 @@
       <!-- O'NG -->
       <div>
         <div class="section-card">
-          <h2>💰 <span data-i18n="profil.price_title">Kurs narxi</span></h2>
-          <div class="price-big">
+          <h2>💰 <span data-i18n="profil.price_title">Konsultatsiya narxi</span></h2>
+          <div class="price-block">
+            <div class="plan-pill">💎 Premium</div>
             <div class="pn" data-i18n="mentors.price">300,000 so'm</div>
-            <div class="ps" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+            <div class="ps" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+            <ul class="price-feats">
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_admission">Admission Programme</span></li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.premium_footer">Oyiga 18 soat</span></li>
+            </ul>
           </div>
           <div class="stat-row">
-            <div class="stat-box"><span class="n">3</span><div class="l" data-i18n="profil.per_week">dars/hafta</div></div>
-            <div class="stat-box"><span class="n">3h</span><div class="l" data-i18n="profil.each">har biri</div></div>
+            <div class="stat-box"><span class="n">3</span><div class="l" data-i18n="profil.per_week">konsultatsiya/hafta</div></div>
+            <div class="stat-box"><span class="n">1.5h</span><div class="l" data-i18n="profil.each">har biri</div></div>
           </div>
           {% if user.is_authenticated %}
             {% if not user.mentor_profile %}
             <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
-              🎓 <span data-i18n="profil.enroll">Kursga yozilish</span>
+              🎓 <span data-i18n="profil.enroll">Konsultatsiyaga yozilish</span>
             </a>
             {% endif %}
           {% else %}
@@ -144,10 +159,10 @@
 
         <div class="section-card">
           <div class="free-box">
-            <h4>🆓 <span data-i18n="profil.free_title">Bepul darslar</span></h4>
-            <p data-i18n="profil.free_desc">Bu mentor haftada 1 marta 1.5 soatlik bepul dars ham o'tkazadi.</p>
+            <h4>🆓 <span data-i18n="profil.free_title">Bepul konsultatsiya</span></h4>
+            <p data-i18n="profil.free_desc">Bu mentor 1 soatlik bepul konsultatsiya o'tkazadi.</p>
           </div>
-          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Bepul darslarga qarang</a>
+          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Bepul konsultatsiyaga qarang</a>
         </div>
       </div>
     </div>

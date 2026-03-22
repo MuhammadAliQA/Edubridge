@@ -37,20 +37,25 @@
 .empty-tab{grid-column:1/-1;text-align:center;padding:56px;color:var(--muted);font-size:.875rem}
 .empty-tab a{color:var(--blue-b)}
 .pricing-sec{padding:80px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:680px;margin:0 auto}
-.price-card{background:var(--bg);border:1px solid var(--border2);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:20px;position:relative;transition:transform .2s}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:980px;margin:0 auto}
+.price-card{background:var(--bg);border:1px solid var(--border2);border-radius:24px;padding:28px 22px;display:flex;flex-direction:column;gap:18px;position:relative;transition:transform .2s}
 .price-card:hover{transform:translateY(-4px)}
 .price-card.featured{border-color:rgba(59,130,246,.35);background:linear-gradient(160deg,rgba(59,130,246,.06) 0%,var(--bg) 60%)}
-.price-card.featured::before{content:'⭐ Eng ko\'p tanlangan';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.68rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.price-card.scholarship{border-color:rgba(245,158,11,.3);background:linear-gradient(160deg,rgba(245,158,11,.06) 0%,var(--bg) 60%)}
+.price-card.featured::before{content:'⭐ Eng ko\'p tanlangan';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.price-card.scholarship::before{content:'🌟 Yangi';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a0800;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.badge-scholarship{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
 .plan-badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:50px;width:fit-content}
 .badge-free{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
 .badge-premium{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.25)}
-.plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-top:4px}
+.badge-scholarship{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+.plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-top:4px}
 .plan-sub{font-size:.82rem;color:var(--muted);margin-top:4px}
 .plan-price{display:flex;align-items:baseline;gap:6px}
 .price-big{font-family:'Bricolage Grotesque',sans-serif;font-size:2.8rem;font-weight:800;line-height:1}
 .price-big-free{color:#4ade80}
 .price-big-premium{color:var(--blue-b)}
+.price-big-scholar{color:#fbbf24;font-size:clamp(1.4rem,3vw,2.2rem);line-height:1.15;word-break:break-word}
 .price-period{font-size:.78rem;color:var(--muted)}
 .price-divider{height:1px;background:var(--border)}
 .price-features{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;flex:1}
@@ -88,7 +93,7 @@
 @media(max-width:900px){
   .steps-grid{grid-template-columns:1fr 1fr}
   .tab-pane.active{grid-template-columns:1fr 1fr}
-  .pricing-grid{grid-template-columns:1fr;max-width:420px}.price-card.featured{transform:none}
+  .pricing-grid{grid-template-columns:1fr;max-width:420px}.price-card.featured{transform:none}.price-card.scholarship{transform:none}
   .free-banner{grid-template-columns:1fr}.free-btns{flex-direction:row;flex-wrap:wrap}
   .hero-stats{flex-wrap:wrap;display:flex;width:100%;border-radius:16px}
   .hstat{padding:14px 16px;border-right:none;border-bottom:1px solid var(--border);flex:1 1 40%}
@@ -342,6 +347,27 @@
           <li class="price-footer">⚡ <span data-i18n="pricing.premium_footer">Oyiga 18 soat konsultatsiya</span></li>
         </ul>
         <a href="/student/royxat/" class="price-btn pb-blue-new" data-i18n="pricing.student_btn">Premium boshlash →</a>
+      </div>
+
+      <!-- SCHOLARSHIP -->
+      <div class="price-card scholarship">
+        <div class="plan-badge badge-scholarship">🎓 <span data-i18n="pricing.scholar_badge">Scholarship</span></div>
+        <div>
+          <div class="plan-name" data-i18n="pricing.scholar_title">Scholarship</div>
+          <div class="plan-sub" data-i18n="pricing.scholar_sub">0 dan universitetgacha</div>
+        </div>
+        <div class="plan-price">
+          <span class="price-big price-big-scholar" data-i18n="pricing.scholar_price">Individual</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f1">0 dan boshlash</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f2">Ariza yozish (SOP/CV)</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f3">Universitet tanlash</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f4">To'liq yo'llanma</span></li>
+          <li class="price-footer">🌍 <span data-i18n="pricing.scholar_footer">Xorijda o'qish imkoni</span></li>
+        </ul>
+        <a href="/scholarship/" class="price-btn" style="background:#f59e0b;color:#1a0800;border:none;border-radius:14px;padding:13px;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center" data-i18n="pricing.scholar_btn">Murojaat qilish →</a>
       </div>
 
     </div>

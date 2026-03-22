@@ -1,212 +1,65 @@
 {% extends 'base.html' %}
-{% block title %}Bepul Darslar — EduBridge{% endblock %}
+{% block title %}Bepul Konsultatsiya — EduBridge{% endblock %}
 
 {% block extra_css %}
 <style>
-
-.page-hero{
-background:linear-gradient(135deg,rgba(13,17,23,1),rgba(26,35,51,1));
-border-bottom:1px solid var(--border2);
-padding:56px 20px 48px;
-text-align:center;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.sec-tag{
-display:block;
-margin:0 auto 14px auto;
-width:max-content;
-color:#86efac;
-border-color:rgba(34,197,94,.25);
-background:rgba(34,197,94,.08);
-padding:4px 14px;
-border-radius:50px;
-border:1px solid;
-}
-
-.page-hero h1{
-font-family:'Bricolage Grotesque',sans-serif;
-font-size:clamp(1.8rem,4vw,2.8rem);
-font-weight:800;
-letter-spacing:-1.5px;
-margin-bottom:12px;
-text-align:center;
-width:100%;
-}
-
-.page-hero p{
-color:var(--muted);
-font-size:.95rem;
-max-width:480px;
-margin:0 auto 24px;
-text-align:center;
-}
-
-.hero-pills{
-display:flex;
-gap:8px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.hero-pill{
-background:rgba(255,255,255,.05);
-border:1px solid var(--border2);
-padding:5px 14px;
-border-radius:50px;
-font-size:.78rem;
-font-weight:600;
-color:var(--text);
-}
-
-.darslar-wrap{
-padding:48px 0 80px;
-}
-
-.darslar-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-gap:16px;
-}
-
-.dars-card{
-background:var(--surface);
-border:1px solid var(--border);
-border-radius:var(--r2);
-padding:22px;
-display:flex;
-flex-direction:column;
-gap:14px;
-transition:.2s;
-border-left:3px solid var(--green);
-}
-
-.dars-card:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 30px rgba(0,0,0,.4);
-}
-
-
-/* ✅ EMPTY CENTER FIX */
-
-.empty-state{
-grid-column:1/-1;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:80px 20px;
-color:var(--muted);
-}
-
-.empty-state .icon{
-font-size:40px;
-margin-bottom:10px;
-}
-
-.empty-state h3{
-color:var(--text);
-font-weight:700;
-margin-bottom:6px;
-}
-
-
-/* CTA */
-
-.cta-box{
-background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(21,128,61,.05));
-border:1px solid rgba(34,197,94,.18);
-border-radius:24px;
-padding:40px;
-text-align:center;
-margin-top:48px;
-}
-
+.page-hero{background:linear-gradient(135deg,rgba(13,17,23,1),rgba(26,35,51,1));border-bottom:1px solid var(--border2);padding:56px 20px 48px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.page-hero .sec-tag{display:block;margin:0 auto 14px;width:max-content;color:#86efac;border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.08);padding:4px 14px;border-radius:50px;border:1px solid}
+.page-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1.5px;margin-bottom:12px;text-align:center;width:100%}
+.page-hero p{color:var(--muted);font-size:.95rem;max-width:480px;margin:0 auto 24px;text-align:center}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.05);border:1px solid var(--border2);padding:5px 14px;border-radius:50px;font-size:.78rem;font-weight:600;color:var(--text)}
+.darslar-wrap{padding:48px 0 80px}
+.darslar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.dars-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:22px;display:flex;flex-direction:column;gap:14px;transition:.2s;border-left:3px solid var(--green)}
+.dars-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.empty-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px;color:var(--muted)}
+.empty-state .icon{font-size:40px;margin-bottom:10px}
+.empty-state h3{color:var(--text);font-weight:700;margin-bottom:6px}
+.cta-box{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(21,128,61,.05));border:1px solid rgba(34,197,94,.18);border-radius:24px;padding:40px;text-align:center;margin-top:48px}
+.cta-box h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:8px}
+.cta-box p{color:var(--muted);font-size:.88rem;margin-bottom:20px;line-height:1.6}
+@media(max-width:600px){.darslar-grid{grid-template-columns:1fr}}
 </style>
 {% endblock %}
-
-
 
 {% block content %}
 
 <div class="page-hero">
-
-<div class="sec-tag">
-Bepul
+  <div class="sec-tag" data-i18n="free_page.tag">Bepul</div>
+  <h1 data-i18n="free_page.title">Bepul IELTS, SAT va Admission Konsultatsiyasi</h1>
+  <p data-i18n="free_page.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS, SAT yoki Admission Programme — birini tanlang.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">🎯 <span data-i18n="free.pill_once">Bir martalik</span></span>
+    <span class="hero-pill">⏱ 1 soat</span>
+    <span class="hero-pill">💻 Online</span>
+    <span class="hero-pill">🆓 <span data-i18n="free.pill_free">Bepul</span></span>
+    <span class="hero-pill">🇺🇿 O'zbek tilida</span>
+  </div>
 </div>
-
-<h1>
-Bepul IELTS va SAT darslari
-</h1>
-
-<p>
-Mentorlarimiz haftada bir marta bepul onlayn dars o'tkazadi.
-1.5 soat, real savollar.
-</p>
-
-<div class="hero-pills">
-<span class="hero-pill">📅 Haftada 1 marta</span>
-<span class="hero-pill">⏱ 1.5 soat</span>
-<span class="hero-pill">💻 Online</span>
-<span class="hero-pill">🆓 Bepul</span>
-<span class="hero-pill">🇺🇿 O'zbek tilida</span>
-</div>
-
-</div>
-
-
 
 <div class="darslar-wrap">
-<div class="container">
+  <div class="container">
+    <div class="darslar-grid">
+      {% for dars in darslar %}
+      <div class="dars-card">
+        {{ dars.sarlavha }}
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <div class="icon">📅</div>
+        <h3 data-i18n="free_page.empty">Hozircha konsultatsiya yo'q</h3>
+        <p data-i18n="free_page.empty_desc">Tez orada yangi bepul konsultatsiyalar e'lon qilinadi.</p>
+      </div>
+      {% endfor %}
+    </div>
 
-<div class="darslar-grid">
-
-{% for dars in darslar %}
-
-<div class="dars-card">
-{{ dars.sarlavha }}
-</div>
-
-{% empty %}
-
-<div class="empty-state">
-
-<div class="icon">📅</div>
-
-<h3>Hozircha dars yo'q</h3>
-
-<p>
-Tez orada yangi bepul darslar e'lon qilinadi
-</p>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-
-
-<div class="cta-box">
-
-<h2>Mentor bo'ling</h2>
-
-<p>
-Haftada bir marta bepul dars o'tkazib
-o'z nomingizni yarating
-</p>
-
-<a href="/mentor/royxat/" class="btn btn-green">
-Mentor bo'lish →
-</a>
-
-</div>
-
-
-</div>
+    <div class="cta-box">
+      <h2 data-i18n="free_page.cta_title">Mentor bo'ling!</h2>
+      <p data-i18n="free_page.cta_desc">Bepul konsultatsiya o'tkazib, o'z brend va nomingizni yarating.</p>
+      <a href="/mentor/royxat/" class="btn btn-green" data-i18n="free_page.cta_btn">Mentor bo'lish →</a>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

@@ -22,6 +22,7 @@
 @media(max-width:600px){
   .filter-inner{gap:8px}
   .filter-count{display:none}
+  .mentors-grid{grid-template-columns:1fr}
 }
 </style>
 {% endblock %}
@@ -31,7 +32,7 @@
   <div class="container">
     <div class="sec-tag" data-i18n="page.all_mentors_tag">Barcha mentorlar</div>
     <h1>🏆 <span data-i18n="page.mentors_title">Mentorlar</span></h1>
-    <p data-i18n="page.mentors_sub">O'zbekistonning barcha viloyatlaridan tasdiqlangan IELTS, SAT va Ingliz tili mentorlari</p>
+    <p data-i18n="page.mentors_sub">O'zbekistonning barcha viloyatlaridan tasdiqlangan IELTS, SAT va Admission Programme mentorlari</p>
   </div>
 </div>
 
@@ -64,8 +65,8 @@
     <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
       <div class="mc-top">
         <div class="mc-av"
-          {% if mentor.yonalish == 'ielts' %}style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)"
-          {% elif mentor.yonalish == 'sat' %}style="background:linear-gradient(135deg,#be185d,#ec4899)"
+          {% if mentor.yonalish == 'ielts' %}style="background:linear-gradient(135deg,#b5000f,#E2001A)"
+          {% elif mentor.yonalish == 'sat' %}style="background:linear-gradient(135deg,#0077aa,#009CDE)"
           {% else %}style="background:linear-gradient(135deg,#0f766e,#14b8a6)"{% endif %}>
           {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">
           {% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
@@ -86,10 +87,10 @@
       {% endif %}
       <div class="mc-price">
         <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-        <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 dars · 3 soatdan</div>
+        <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
       </div>
       <div style="display:flex;gap:8px">
-        <a href="/mentor/{{ mentor.pk }}/" class="mc-btn" style="flex:1" data-i18n="mentors.details">Batafsil</a>
+        <a href="/mentor/{{ mentor.pk }}/" class="mc-btn" style="flex:1" data-i18n="mentors.details">Batafsil →</a>
         {% if user.is_authenticated and not user.mentor_profile %}
         <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-sm" style="flex:1;border-radius:10px" data-i18n="ielts.enroll">Yozilish</a>
         {% endif %}

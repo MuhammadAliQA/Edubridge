@@ -8,4 +8,5 @@ urlpatterns = [
     path('free-darslar/', views.free_darslar, name='free_darslar'),
     path('kurs/ielts/', views.ielts_sahifa, name='ielts_sahifa'),
     path('kurs/sat/', views.sat_sahifa, name='sat_sahifa'),
+    path('scholarship/', views.scholarship, name='scholarship'),
 ]
