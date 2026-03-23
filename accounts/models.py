@@ -21,7 +21,7 @@ VILOYATLAR = [
 YONALISHLAR = [
     ('ielts', 'IELTS'),
     ('sat', 'SAT'),
-    ('ingliz_tili', 'Ingliz tili'),
+    ('ingliz_tili', 'Admission'),
 ]
 
 class MentorProfile(models.Model):

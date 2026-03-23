@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}EduBridge — IELTS, SAT & Admission Programme{% endblock %}
+{% block title %}EduBridge — IELTS, SAT,Admission Programme  &  Grants{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -37,11 +37,12 @@
 .empty-tab{grid-column:1/-1;text-align:center;padding:56px;color:var(--muted);font-size:.875rem}
 .empty-tab a{color:var(--blue-b)}
 .pricing-sec{padding:80px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:980px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1160px;margin:0 auto}
 .price-card{background:var(--bg);border:1px solid var(--border2);border-radius:24px;padding:28px 22px;display:flex;flex-direction:column;gap:18px;position:relative;transition:transform .2s}
 .price-card:hover{transform:translateY(-4px)}
 .price-card.featured{border-color:rgba(59,130,246,.35);background:linear-gradient(160deg,rgba(59,130,246,.06) 0%,var(--bg) 60%)}
 .price-card.scholarship{border-color:rgba(245,158,11,.3);background:linear-gradient(160deg,rgba(245,158,11,.06) 0%,var(--bg) 60%)}
+.price-card.admission{border-color:rgba(20,184,166,.35);background:linear-gradient(160deg,rgba(20,184,166,.07) 0%,var(--bg) 60%)}
 .price-card.featured::before{content:'⭐ Eng ko\'p tanlangan';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
 .price-card.scholarship::before{content:'🌟 Yangi';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a0800;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
 .badge-scholarship{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
@@ -93,7 +94,7 @@
 @media(max-width:900px){
   .steps-grid{grid-template-columns:1fr 1fr}
   .tab-pane.active{grid-template-columns:1fr 1fr}
-  .pricing-grid{grid-template-columns:1fr;max-width:420px}.price-card.featured{transform:none}.price-card.scholarship{transform:none}
+  .pricing-grid{grid-template-columns:1fr 1fr;max-width:860px}.price-card.featured{transform:none}.price-card.scholarship{transform:none}.price-card.admission{transform:none}
   .free-banner{grid-template-columns:1fr}.free-btns{flex-direction:row;flex-wrap:wrap}
   .hero-stats{flex-wrap:wrap;display:flex;width:100%;border-radius:16px}
   .hstat{padding:14px 16px;border-right:none;border-bottom:1px solid var(--border);flex:1 1 40%}
@@ -122,7 +123,7 @@
   .hstat-l{font-size:.62rem}
   .tab-bar{width:100%;border-radius:14px;padding:4px}
   .tab-btn{flex:1;text-align:center;padding:8px 6px;font-size:.78rem}
-  .pricing-grid{max-width:100%}
+  .pricing-grid{grid-template-columns:1fr;max-width:100%}
   .price-card.featured::before{font-size:.62rem}
   .mentor-card{padding:16px}
   .sec-h{font-size:1.4rem}
@@ -159,7 +160,7 @@
   <div style="display:flex;justify-content:center;width:100%"><div class="hero-stats">
     <div class="hstat"><span class="hstat-n">12</span><span class="hstat-l" data-i18n="hero.stat_region">Viloyat</span></div>
     <div class="hstat"><span class="hstat-n">3</span><span class="hstat-l" data-i18n="hero.stat_subject">Yo'nalish</span></div>
-    <div class="hstat"><span class="hstat-n">300K</span><span class="hstat-l" data-i18n="hero.stat_price">so'm / oy</span></div>
+    <div class="hstat"><span class="hstat-n">150K</span><span class="hstat-l" data-i18n="hero.stat_price">so'm / hafta</span></div>
     <div class="hstat"><span class="hstat-n">1h</span><span class="hstat-l" data-i18n="hero.stat_free">Bepul</span></div>
   </div></div>
 </section>
@@ -174,7 +175,7 @@
     <div class="steps-grid">
       <div class="step"><div class="step-num">01</div><h3 data-i18n="how.s1_title">Ro'yxatdan o'ting</h3><p data-i18n="how.s1_desc">O'quvchi sifatida profilingizni yarating.</p></div>
       <div class="step"><div class="step-num">02</div><h3 data-i18n="how.s2_title">Mentor tanlang</h3><p data-i18n="how.s2_desc">IELTS, SAT yoki Admission Programme bo'yicha mentor tanlang.</p></div>
-      <div class="step"><div class="step-num">03</div><h3 data-i18n="how.s3_title">Konsultatsiyaga yoziling</h3><p data-i18n="how.s3_desc">Haftada 3 ta konsultatsiya, 1.5 soatdan — 300,000 so'm/oy.</p></div>
+      <div class="step"><div class="step-num">03</div><h3 data-i18n="how.s3_title">Konsultatsiyaga yoziling</h3><p data-i18n="how.s3_desc">1 hafta: 3 ta konsultatsiya, 1.5 soatdan — 150,000 so'm.</p></div>
       <div class="step"><div class="step-num">04</div><h3 data-i18n="how.s4_title">Natijaga erishing</h3><p data-i18n="how.s4_desc">Mentor bilan ishlang, maqsad ballingizga erishing.</p></div>
     </div>
   </div>
@@ -186,7 +187,7 @@
     <div class="sec-head">
       <div class="sec-tag" data-i18n="mentors.tag">Top mentorlar</div>
       <h2 class="sec-h" data-i18n="mentors.title">3 ta yo'nalish bo'yicha</h2>
-      <p class="sec-p" data-i18n="mentors.sub">Haftada 3 ta konsultatsiya · 1.5 soatdan · 300,000 so'm/oy</p>
+      <p class="sec-p" data-i18n="mentors.sub">1 hafta · 3 konsultatsiya · 1.5 soat · 150,000 so'm</p>
     </div>
 
     <div class="tab-bar">
@@ -215,8 +216,8 @@
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
-          <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+          <div class="mc-price-n" data-i18n="mentors.price">150,000 so'm</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 konsultatsiya · 1.5 soatdan</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
@@ -247,8 +248,8 @@
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
-          <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+          <div class="mc-price-n" data-i18n="mentors.price">150,000 so'm</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 konsultatsiya · 1.5 soatdan</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
@@ -278,8 +279,8 @@
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
-          <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-          <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+          <div class="mc-price-n">250,000 so'm</div>
+          <div class="mc-price-s">4 konsultatsiya · 1.5 soatdan · 1.5 haftada</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
@@ -305,12 +306,12 @@
     </div>
     <div class="pricing-grid">
 
-      <!-- BEPUL -->
+      <!-- CONSULTATION -->
       <div class="price-card">
-        <div class="plan-badge badge-free">🆓 <span data-i18n="pricing.free_badge">Bepul</span></div>
+        <div class="plan-badge badge-free">🕒 <span data-i18n="pricing.free_badge">Konsultatsiya</span></div>
         <div>
           <div class="plan-name" data-i18n="pricing.free_title">Free</div>
-          <div class="plan-sub" data-i18n="pricing.free_sub">Bir martalik konsultatsiya</div>
+          <div class="plan-sub" data-i18n="pricing.free_sub">1 soat · 1 martalik</div>
         </div>
         <div class="plan-price">
           <span class="price-big price-big-free">0</span>
@@ -321,10 +322,9 @@
           <li><span class="feat-icon feat-on-green">✓</span> <span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
           <li><span class="feat-icon feat-on-green">✓</span> <span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
           <li class="feat-off"><span class="feat-icon feat-off-icon">✕</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
-          <li class="feat-off"><span class="feat-icon feat-off-icon">✕</span> <span data-i18n="pricing.feat_weekly">Haftada 3 × 1.5 soat</span></li>
           <li class="price-footer">⏱ <span data-i18n="pricing.free_footer">1 soat · bir marta</span></li>
         </ul>
-        <a href="/free-darslar/" class="price-btn pb-green-new" data-i18n="pricing.free_btn">Bepul boshlash →</a>
+        <a href="/free-darslar/" class="price-btn pb-green-new" data-i18n="pricing.free_btn">Yozilish →</a>
       </div>
 
       <!-- PREMIUM -->
@@ -332,42 +332,64 @@
         <div class="plan-badge badge-premium">💎 <span data-i18n="pricing.premium_badge">Premium</span></div>
         <div>
           <div class="plan-name" data-i18n="pricing.student_title">Premium</div>
-          <div class="plan-sub" data-i18n="pricing.premium_sub">To'liq konsultatsiya paketi</div>
+          <div class="plan-sub" data-i18n="pricing.premium_sub">IELTS/SAT uchun</div>
         </div>
         <div class="plan-price">
-          <span class="price-big price-big-premium">300,000</span>
-          <span class="price-period" data-i18n="pricing.student_period">so'm / oy</span>
+          <span class="price-big price-big-premium">150,000</span>
+          <span class="price-period" data-i18n="pricing.student_period">so'm / hafta</span>
         </div>
         <div class="price-divider"></div>
         <ul class="price-features">
           <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
           <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
-          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
-          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_weekly">Haftada 3 × 1.5 soat</span></li>
-          <li class="price-footer">⚡ <span data-i18n="pricing.premium_footer">Oyiga 18 soat konsultatsiya</span></li>
+          <li class="feat-off"><span class="feat-icon feat-off-icon">✕</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
+          <li><span class="feat-icon feat-on-blue">✓</span> <span data-i18n="pricing.feat_weekly">1 hafta · 3 × 1.5 soat</span></li>
+          <li class="price-footer">⚡ <span data-i18n="pricing.premium_footer">3 martalik · 1.5 soatdan</span></li>
         </ul>
         <a href="/student/royxat/" class="price-btn pb-blue-new" data-i18n="pricing.student_btn">Premium boshlash →</a>
       </div>
 
-      <!-- SCHOLARSHIP -->
-      <div class="price-card scholarship">
-        <div class="plan-badge badge-scholarship">🎓 <span data-i18n="pricing.scholar_badge">Scholarship</span></div>
+      <!-- ADMISSION -->
+      <div class="price-card admission">
+        <div class="plan-badge badge-premium" style="background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.25);color:#5eead4">🧭 <span data-i18n="pricing.admission_badge">Admission</span></div>
         <div>
-          <div class="plan-name" data-i18n="pricing.scholar_title">Scholarship</div>
-          <div class="plan-sub" data-i18n="pricing.scholar_sub">0 dan universitetgacha</div>
+          <div class="plan-name" data-i18n="pricing.admission_title">Admission</div>
+          <div class="plan-sub" data-i18n="pricing.admission_sub">4 × 1.5 soat · 1.5 haftada</div>
         </div>
         <div class="plan-price">
-          <span class="price-big price-big-scholar" data-i18n="pricing.scholar_price">Individual</span>
+          <span class="price-big">250,000</span>
+          <span class="price-period" data-i18n="pricing.admission_period">so'm / paket</span>
         </div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f1">0 dan boshlash</span></li>
-          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f2">Ariza yozish (SOP/CV)</span></li>
-          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f3">Universitet tanlash</span></li>
-          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f4">To'liq yo'llanma</span></li>
-          <li class="price-footer">🌍 <span data-i18n="pricing.scholar_footer">Xorijda o'qish imkoni</span></li>
+          <li><span class="feat-icon" style="background:rgba(20,184,166,.14);color:#5eead4">✓</span> <span data-i18n="pricing.feat_admission">Admission Programme</span></li>
+          <li><span class="feat-icon" style="background:rgba(20,184,166,.14);color:#5eead4">✓</span> <span data-i18n="pricing.admission_f1">4 × 1.5 soat</span></li>
+          <li><span class="feat-icon" style="background:rgba(20,184,166,.14);color:#5eead4">✓</span> <span data-i18n="pricing.admission_f2">1.5 hafta davomida</span></li>
+          <li class="price-footer">🗓 <span data-i18n="pricing.admission_footer">Reja + tekshiruv</span></li>
         </ul>
-        <a href="/scholarship/" class="price-btn" style="background:#f59e0b;color:#1a0800;border:none;border-radius:14px;padding:13px;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center" data-i18n="pricing.scholar_btn">Murojaat qilish →</a>
+        <a href="/admission/" class="price-btn" style="background:#14b8a6;color:#06201d;border:none;border-radius:14px;padding:13px;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center" data-i18n="pricing.admission_btn">Admission boshlash →</a>
+      </div>
+
+      <!-- GRANTS -->
+      <div class="price-card scholarship">
+        <div class="plan-badge badge-scholarship">🎓 <span data-i18n="pricing.scholar_badge">Grants</span></div>
+        <div>
+          <div class="plan-name" data-i18n="pricing.scholar_title">Grants</div>
+          <div class="plan-sub" data-i18n="pricing.scholar_sub">Submitgacha to'liq yordam</div>
+        </div>
+        <div class="plan-price">
+          <span class="price-big price-big-scholar">350,000</span>
+          <span class="price-period" data-i18n="pricing.free_currency">so'm</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f1">Boshlanishidan submitgacha</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f2">SOP/CV tayyorlash</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f3">Universitet va grant tanlash</span></li>
+          <li><span class="feat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24">✓</span> <span data-i18n="pricing.scholar_f4">Submitgacha tekshiruv</span></li>
+          <li class="price-footer">🌍 <span data-i18n="pricing.scholar_footer">Global opportunity</span></li>
+        </ul>
+        <a href="/grants/" class="price-btn" style="background:#f59e0b;color:#1a0800;border:none;border-radius:14px;padding:13px;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center" data-i18n="pricing.scholar_btn">Murojaat qilish →</a>
       </div>
 
     </div>
@@ -380,8 +402,8 @@
     <div class="free-banner">
       <div>
         <div class="sec-tag" style="display:block;margin-bottom:10px" data-i18n="free.tag">Bepul</div>
-        <h2 class="free-h">🆓 <span data-i18n="free.title">Bepul IELTS, SAT va Admission konsultatsiyasi</span></h2>
-        <p class="free-p" data-i18n="free.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS, SAT yoki Admission Programme — birini tanlang. Ro'yxatdan o'tmasdan ham qatnashingiz mumkin.</p>
+        <h2 class="free-h">🆓 <span data-i18n="free.title">Bepul IELTS va SAT konsultatsiyasi</span></h2>
+        <p class="free-p" data-i18n="free.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS yoki SAT bo'yicha birini tanlang. Ro'yxatdan o'tmasdan ham qatnashingiz mumkin.</p>
         <div class="free-pills">
           <span class="free-pill">🎯 <span data-i18n="free.pill_once">Bir martalik</span></span>
           <span class="free-pill">⏱ 1 soat</span>

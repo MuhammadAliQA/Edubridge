@@ -1,11 +1,14 @@
 from pathlib import Path
 import os
+from django.core.exceptions import ImproperlyConfigured
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv(Path(__file__).resolve().parent.parent / '.env')
-except ImportError:
-    pass
+SKIP_DOTENV = os.environ.get('SKIP_DOTENV', 'False') == 'True'
+if not SKIP_DOTENV:
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+    except ImportError:
+        pass
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,12 +62,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'edubridge.wsgi.application'
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
+REQUIRE_DATABASE_URL = os.environ.get('REQUIRE_DATABASE_URL', 'False') == 'True'
 if DATABASE_URL:
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     }
 else:
+    if REQUIRE_DATABASE_URL:
+        raise ImproperlyConfigured("DATABASE_URL is required when DEBUG=False (configure PostgreSQL).")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -112,7 +118,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Sayt", "url": "/", "new_window": True},
         {"name": "Mentorlar", "url": "/mentorlar/", "new_window": True},
-        {"name": "Programs", "url": "/scholarship/", "new_window": True},
+        {"name": "Grants", "url": "/grants/", "new_window": True},
     ],
 
     "usermenu_links": [

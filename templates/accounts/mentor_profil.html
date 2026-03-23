@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ mentor.user.get_full_name }} — EduBridge{% endblock %}
+{% load profile_extras %}
 
 {% block extra_css %}
 <style>
@@ -120,22 +121,37 @@
         <div class="section-card">
           <h2>💰 <span data-i18n="profil.price_title">Konsultatsiya narxi</span></h2>
           <div class="price-block">
+            {% if mentor.yonalish == 'ingliz_tili' %}
+            <div class="plan-pill">🧭 Admission</div>
+            <div class="pn">250,000 so'm</div>
+            <div class="ps">4 konsultatsiya · 1.5 soatdan · 1.5 haftada</div>
+            <ul class="price-feats">
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#5eead4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Admission Programme</li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#5eead4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 × 1.5 soat</li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#5eead4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1.5 hafta davomida</li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#5eead4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reja + tekshiruv</li>
+            </ul>
+            {% else %}
             <div class="plan-pill">💎 Premium</div>
-            <div class="pn" data-i18n="mentors.price">300,000 so'm</div>
-            <div class="ps" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+            <div class="pn" data-i18n="mentors.price">150,000 so'm</div>
+            <div class="ps" data-i18n="mentors.price_sub">1 hafta · 3 konsultatsiya · 1.5 soatdan</div>
             <ul class="price-feats">
               <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_ielts">IELTS konsultatsiya</span></li>
               <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_sat">SAT konsultatsiya</span></li>
-              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.feat_admission">Admission Programme</span></li>
-              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.premium_footer">Oyiga 18 soat</span></li>
+              <li><span class="pcheck"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="pricing.premium_footer">3 martalik · 1.5 soatdan</span></li>
             </ul>
+            {% endif %}
           </div>
           <div class="stat-row">
+            {% if mentor.yonalish == 'ingliz_tili' %}
+            <div class="stat-box"><span class="n">4</span><div class="l">konsultatsiya</div></div>
+            {% else %}
             <div class="stat-box"><span class="n">3</span><div class="l" data-i18n="profil.per_week">konsultatsiya/hafta</div></div>
+            {% endif %}
             <div class="stat-box"><span class="n">1.5h</span><div class="l" data-i18n="profil.each">har biri</div></div>
           </div>
           {% if user.is_authenticated %}
-            {% if not user.mentor_profile %}
+            {% if not user|has_mentor_profile %}
             <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
               🎓 <span data-i18n="profil.enroll">Konsultatsiyaga yozilish</span>
             </a>
@@ -157,6 +173,7 @@
           {% endif %}
         </div>
 
+        {% if mentor.yonalish != 'ingliz_tili' %}
         <div class="section-card">
           <div class="free-box">
             <h4>🆓 <span data-i18n="profil.free_title">Bepul konsultatsiya</span></h4>
@@ -164,6 +181,7 @@
           </div>
           <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Bepul konsultatsiyaga qarang</a>
         </div>
+        {% endif %}
       </div>
     </div>
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import MentorProfile, YONALISHLAR
 from .models import FreeDars
 
@@ -77,5 +77,13 @@ def sat_sahifa(request):
     return render(request, 'courses/sat.html', {'mentorlar': mentorlar})
 
 
+def admission(request):
+    return render(request, 'courses/admission.html')
+
+
+def grants(request):
+    return render(request, 'courses/grants.html')
+
+
 def scholarship(request):
-    return render(request, 'courses/scholarship.html')
+    return redirect('/grants/', permanent=True)

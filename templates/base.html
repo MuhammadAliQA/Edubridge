@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="EduBridge — O'zbekistonning barcha viloyatlaridan IELTS, SAT va Admission Programme mentorlari. Haftada 3 ta konsultatsiya, 1.5 soatdan. 300,000 so'm/oy."/>
-<meta name="keywords" content="IELTS, SAT, Admission, mentor, konsultatsiya, O'zbekiston, EduBridge"/>
+<meta name="description" content="EduBridge — IELTS, SAT, Admission va Grants bo'yicha yordam. O'zbekistonning barcha viloyatlaridan tasdiqlangan mentorlar bilan online konsultatsiyalar."/>
+<meta name="keywords" content="IELTS, SAT, Admission, Grants, mentor, konsultatsiya, O'zbekiston, EduBridge"/>
 <meta property="og:title" content="{% block og_title %}EduBridge — IELTS, SAT & Admission Programme{% endblock %}"/>
 <meta property="og:description" content="O'zbekistonning barcha viloyatlaridan tasdiqlangan IELTS, SAT va Admission Programme mentorlari. Haftada 3 ta konsultatsiya, 1.5 soatdan."/>
 <meta property="og:type" content="website"/>
@@ -14,6 +14,7 @@
 <link rel="shortcut icon" href="/static/favicon.svg"/>
 <title>{% block title %}EduBridge{% endblock %}</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+{% load profile_extras %}
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -166,8 +167,9 @@ select.form-control option{background:var(--surface2)}
       <a href="/mentorlar/" data-i18n="nav.mentors">Mentorlar</a>
       <a href="/kurs/ielts/">IELTS</a>
       <a href="/kurs/sat/">SAT</a>
-      <a href="/scholarship/" data-i18n="nav.scholarship">Programs (Global Opportunity)</a>
-      <a href="/free-darslar/" data-i18n="nav.free">Admission</a>
+      <a href="/admission/" data-i18n="nav.scholarship">Admission</a>
+      <a href="/grants/" data-i18n="nav.grants">Grants</a>
+      <a href="/free-darslar/" data-i18n="nav.free">Bepul konsultatsiya</a>
     </div>
     <div class="nav-right">
       <div class="lang-switcher">
@@ -178,9 +180,9 @@ select.form-control option{background:var(--surface2)}
 
       {% if user.is_authenticated %}
         <span class="nav-user"><span data-i18n="nav.hello">Salom,</span> <strong>{{ user.first_name|default:user.username }}</strong></span>
-        {% if user.mentor_profile %}
+        {% if user|has_mentor_profile %}
           <a href="{% url 'mentor_profil' user.mentor_profile.pk %}" class="btn btn-ghost btn-sm" data-i18n="nav.profile">Profilim</a>
-        {% elif user.student_profile %}
+        {% elif user|has_student_profile %}
           <a href="{% url 'student_profil' user.student_profile.pk %}" class="btn btn-ghost btn-sm" data-i18n="nav.profile">Profilim</a>
         {% endif %}
         <a href="/chiqish/" class="btn btn-red btn-sm" data-i18n="nav.logout">Chiqish</a>
@@ -209,9 +211,10 @@ select.form-control option{background:var(--surface2)}
         <h4 data-i18n="footer.directions">Yo'nalishlar</h4>
         <a href="/kurs/ielts/" data-i18n="footer.ielts">IELTS kursi</a>
         <a href="/kurs/sat/" data-i18n="footer.sat">SAT kursi</a>
-        <a href="/scholarship/" data-i18n="nav.scholarship">Programs (Global Opportunity)</a>
+        <a href="/admission/" data-i18n="nav.scholarship">Admission</a>
+        <a href="/grants/" data-i18n="nav.grants">Grants</a>
         <a href="/mentorlar/" data-i18n="footer.all_mentors">Barcha mentorlar</a>
-        <a href="/free-darslar/" data-i18n="nav.free">Admission</a>
+        <a href="/free-darslar/" data-i18n="nav.free">Bepul konsultatsiya</a>
       </div>
       <div class="foot-col">
         <h4 data-i18n="footer.account">Hisob</h4>

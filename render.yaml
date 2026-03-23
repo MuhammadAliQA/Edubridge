@@ -9,5 +9,11 @@ services:
         generateValue: true
       - key: DEBUG
         value: "False"
+      - key: REQUIRE_DATABASE_URL
+        value: "True"
+      - key: SKIP_DOTENV
+        value: "True"
+      - key: ADMIN_PATH
+        value: "secure-admin/"
       - key: PYTHON_VERSION
         value: "3.11.0"

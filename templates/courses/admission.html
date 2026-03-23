@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Admission — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.ad-hero{padding:64px 0 56px;text-align:center;border-bottom:1px solid var(--border2)}
+.ad-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
+.ad-hero h1 em{background:linear-gradient(135deg,#3b82f6,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.ad-hero p{color:var(--muted);font-size:.95rem;max-width:720px;margin:0 auto 28px;line-height:1.75}
+.ad-hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ad-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.22);color:#93c5fd;padding:4px 14px;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.pill{background:rgba(255,255,255,.05);border:1px solid var(--border2);padding:5px 14px;border-radius:50px;font-size:.78rem;font-weight:600;color:var(--text)}
+.steps-sec{padding:64px 0}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border2);border-radius:20px;overflow:hidden}
+.step-item{background:var(--surface);padding:28px 22px}
+.step-item:hover{background:var(--surface2)}
+.step-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:.9rem;font-weight:800;color:#061227;margin-bottom:14px}
+.step-item h3{font-size:.9rem;font-weight:700;margin-bottom:6px}
+.step-item p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.includes-sec{padding:0 0 64px}
+.includes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.inc-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.inc-icon{font-size:1.6rem}
+.inc-title{font-size:.92rem;font-weight:700}
+.inc-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+.contact-sec{padding:0 0 80px}
+.contact-card{background:linear-gradient(135deg,rgba(59,130,246,.09),rgba(59,130,246,.03));border:1px solid rgba(59,130,246,.22);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center}
+.contact-card h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.contact-card p{color:var(--muted);font-size:.9rem;line-height:1.7;max-width:560px}
+.contact-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.btn-blue{background:#3b82f6;color:#061227;border:none}
+.btn-blue:hover{background:#1d4ed8;transform:translateY(-1px)}
+.note{font-size:.8rem;color:var(--muted2);margin-top:8px}
+@media(max-width:900px){
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .includes-grid{grid-template-columns:1fr}
+  .contact-card{grid-template-columns:1fr}.contact-btns{flex-direction:row;flex-wrap:wrap}
+}
+@media(max-width:600px){
+  .steps-grid{grid-template-columns:1fr}
+  .contact-card{padding:28px 20px}
+  .ad-hero-btns{flex-direction:column;align-items:center}
+  .ad-hero-btns .btn{width:100%;max-width:280px}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="ad-hero">
+  <div class="container">
+    <div class="ad-badge">🧭 Admission</div>
+    <h1>Universitetga qabul —<br><em>arizadan acceptance’gacha</em></h1>
+    <p>
+      Universitet tanlash, application strategy, essaylar, hujjatlar, deadline va submit — hammasini birga qilamiz.
+      Visa va turar joy masalalaridan tashqari.
+    </p>
+    <div class="ad-hero-btns">
+      <a href="#contact" class="btn btn-blue" style="border-radius:12px;padding:12px 28px">🚀 Boshlash →</a>
+      <a href="#steps" class="btn btn-ghost" style="border-radius:12px;padding:12px 28px">Qanday ishlaydi?</a>
+    </div>
+    <div class="pill-row">
+      <span class="pill">💰 250,000 so'm</span>
+      <span class="pill">🗓 1.5 hafta</span>
+      <span class="pill">⏱ 4 × 1.5 soat</span>
+    </div>
+  </div>
+</section>
+
+<section class="steps-sec" id="steps">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag">Jarayon</div>
+      <h2 class="sec-h">4 qadam — admission’ga</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h3>Profil tahlili</h3>
+        <p>GPA, faoliyat, maqsad, budjet va deadline’lar bo‘yicha start nuqtani aniqlaymiz.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h3>Universitet ro‘yxati</h3>
+        <p>Reach/Match/Safety asosida ro‘yxat + requirement va timeline’ni tuzamiz.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h3>Essay & hujjatlar</h3>
+        <p>Personal statement, short answers, CV/resume, recommendation bo‘yicha guidance va edit.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <h3>Submit</h3>
+        <p>Form’larni to‘ldirish, checklist, final review va submit (visa/turar joy kirmaydi).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="includes-sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag">Paket ichida</div>
+      <h2 class="sec-h">Nima kiradi?</h2>
+    </div>
+    <div class="includes-grid">
+      <div class="inc-card">
+        <div class="inc-icon">🎯</div>
+        <div class="inc-title">Strategy</div>
+        <div class="inc-desc">Yo‘nalish, target universitetlar, deadline va checklist.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">📝</div>
+        <div class="inc-title">Essay edit</div>
+        <div class="inc-desc">Draft → final: structure, storytelling, clarity.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">📄</div>
+        <div class="inc-title">Hujjatlar</div>
+        <div class="inc-desc">CV/resume, activities list, recommendation yo‘riqnomasi.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">✅</div>
+        <div class="inc-title">Submit support</div>
+        <div class="inc-desc">Form’larni tekshirish, final checklist, submit.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">💬</div>
+        <div class="inc-title">Feedback</div>
+        <div class="inc-desc">4 sessiya davomida uyga vazifa + feedback.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">🧑‍💻</div>
+        <div class="inc-title">Online</div>
+        <div class="inc-desc">Zoom/Meet formatida — qulay vaqtda.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-sec" id="contact">
+  <div class="container">
+    <div class="contact-card">
+      <div>
+        <div class="ad-badge" style="margin-bottom:12px">🧾 Tarif</div>
+        <h2>Admission — 250,000 so'm</h2>
+        <p>1.5 hafta ichida 4 ta sessiya (1.5 soatdan). Maqsad: arizani to‘g‘ri yopish va submit qilish.</p>
+        <div class="note">Eslatma: visa va turar joy masalalari paketga kirmaydi.</div>
+      </div>
+      <div class="contact-btns">
+        <a href="/student/royxat/" class="btn btn-blue btn-lg" style="border-radius:12px">🚀 Boshlash →</a>
+        <a href="/mentorlar/" class="btn btn-ghost btn-lg" style="border-radius:12px">Mentorlarni ko'rish</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

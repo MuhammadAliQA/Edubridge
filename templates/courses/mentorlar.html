@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Mentorlar — EduBridge{% endblock %}
+{% load profile_extras %}
 
 {% block extra_css %}
 <style>
@@ -86,12 +87,17 @@
       <p style="font-size:.8rem;color:var(--muted);line-height:1.5">{{ mentor.haqida|truncatechars:90 }}</p>
       {% endif %}
       <div class="mc-price">
-        <div class="mc-price-n" data-i18n="mentors.price">300,000 so'm</div>
-        <div class="mc-price-s" data-i18n="mentors.price_sub">1 oy · haftada 3 · 1.5 soatdan</div>
+        {% if mentor.yonalish == 'ingliz_tili' %}
+        <div class="mc-price-n">250,000 so'm</div>
+        <div class="mc-price-s">4 konsultatsiya · 1.5 soatdan · 1.5 haftada</div>
+        {% else %}
+        <div class="mc-price-n" data-i18n="mentors.price">150,000 so'm</div>
+        <div class="mc-price-s" data-i18n="mentors.price_sub">1 hafta · 3 konsultatsiya · 1.5 soatdan</div>
+        {% endif %}
       </div>
       <div style="display:flex;gap:8px">
         <a href="/mentor/{{ mentor.pk }}/" class="mc-btn" style="flex:1" data-i18n="mentors.details">Batafsil →</a>
-        {% if user.is_authenticated and not user.mentor_profile %}
+        {% if user|has_student_profile %}
         <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-sm" style="flex:1;border-radius:10px" data-i18n="ielts.enroll">Yozilish</a>
         {% endif %}
       </div>

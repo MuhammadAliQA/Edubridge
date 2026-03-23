@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}Grants — EduBridge{% endblock %}
+
+{% block extra_css %}
+<style>
+.sch-hero{padding:64px 0 56px;text-align:center;border-bottom:1px solid var(--border2)}
+.sch-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
+.sch-hero h1 em{background:linear-gradient(135deg,#14b8a6,#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.sch-hero p{color:var(--muted);font-size:.95rem;max-width:640px;margin:0 auto 28px;line-height:1.75}
+.sch-hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sch-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.22);color:#5eead4;padding:4px 14px;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.steps-sec{padding:64px 0}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border2);border-radius:20px;overflow:hidden}
+.step-item{background:var(--surface);padding:28px 22px;position:relative}
+.step-item:hover{background:var(--surface2)}
+.step-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#14b8a6,#0f766e);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:.9rem;font-weight:800;color:#06201d;margin-bottom:14px}
+.step-item h3{font-size:.9rem;font-weight:700;margin-bottom:6px}
+.step-item p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.includes-sec{padding:0 0 64px}
+.includes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.inc-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.inc-icon{font-size:1.6rem}
+.inc-title{font-size:.92rem;font-weight:700}
+.inc-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+.contact-sec{padding:0 0 80px}
+.contact-card{background:linear-gradient(135deg,rgba(20,184,166,.09),rgba(20,184,166,.03));border:1px solid rgba(20,184,166,.22);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center}
+.contact-card h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.contact-card p{color:var(--muted);font-size:.9rem;line-height:1.7;max-width:520px}
+.contact-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.btn-teal{background:#14b8a6;color:#06201d;border:none}
+.btn-teal:hover{background:#0f766e;transform:translateY(-1px)}
+.pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.pill{background:rgba(255,255,255,.05);border:1px solid var(--border2);padding:5px 14px;border-radius:50px;font-size:.78rem;font-weight:600;color:var(--text)}
+@media(max-width:900px){
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .includes-grid{grid-template-columns:1fr}
+  .contact-card{grid-template-columns:1fr}.contact-btns{flex-direction:row;flex-wrap:wrap}
+}
+@media(max-width:600px){
+  .steps-grid{grid-template-columns:1fr}
+  .contact-card{padding:28px 20px}
+  .sch-hero-btns{flex-direction:column;align-items:center}
+  .sch-hero-btns .btn{width:100%;max-width:280px}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="sch-hero">
+  <div class="container">
+    <div class="sch-badge">🎓 Grants & Programs</div>
+    <h1>Programlarga tayyorgarlik —<br><em>boshidan submitgacha</em></h1>
+    <p>
+      YYGS, Lumiere Research, LaunchX kabi programlar uchun portfolio, essaylar, activity plan va application’ni birga tayyorlaymiz.
+      Maqsad: kuchli profil + deadline’larni to‘g‘ri yopish.
+    </p>
+    <div class="sch-hero-btns">
+      <a href="#contact" class="btn btn-teal" style="border-radius:12px;padding:12px 28px">🚀 Boshlash →</a>
+      <a href="#steps" class="btn btn-ghost" style="border-radius:12px;padding:12px 28px">Qanday ishlaydi?</a>
+    </div>
+    <div class="pill-row">
+      <span class="pill">💰 350,000 so'm</span>
+      <span class="pill">🕒 Submitgacha</span>
+      <span class="pill">🧑‍💻 Online</span>
+    </div>
+  </div>
+</section>
+
+<!-- QADAMLAR -->
+<section class="steps-sec" id="steps">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag">Jarayon</div>
+      <h2 class="sec-h">4 qadam — application’ga</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h3>Program tanlash</h3>
+        <p>Qaysi program(lar): YYGS, Lumiere Research, LaunchX va boshqalar — profilingizga mosini tanlaymiz.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h3>Profil & portfolio</h3>
+        <p>Activity reja, project/portfolio, resume va pozitsioning — kuchli ko‘rinish uchun.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h3>Essay & hujjatlar</h3>
+        <p>Essay javoblari, short answers, recommendation’lar bo‘yicha guidance va tahrir.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <h3>Submit & review</h3>
+        <p>Form’larni to‘ldirish, checklist, deadline nazorati va yakuniy review — submitgacha.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NIMA KIRADI -->
+<section class="includes-sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag">Paket ichida</div>
+      <h2 class="sec-h">Nima kiradi?</h2>
+    </div>
+    <div class="includes-grid">
+      <div class="inc-card">
+        <div class="inc-icon">🧭</div>
+        <div class="inc-title">Program strategiya</div>
+        <div class="inc-desc">Timeline, requirement tahlil, kuchli tomonlaringizga mos yo‘l xaritasi.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">🧩</div>
+        <div class="inc-title">Portfolio & projects</div>
+        <div class="inc-desc">Project g‘oyalar, research/impact yo‘nalishi, natija ko‘rsatish formatlari.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">📝</div>
+        <div class="inc-title">Essay tahriri</div>
+        <div class="inc-desc">Structure, storytelling, clarity — draft’lardan final’gacha edit.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">✅</div>
+        <div class="inc-title">Checklist & submit</div>
+        <div class="inc-desc">Har bir qadam bo‘yicha checklist, form’larni tekshirish va submitga tayyorlash.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">📣</div>
+        <div class="inc-title">Interview/fit</div>
+        <div class="inc-desc">Agar kerak bo‘lsa: mock interview va “Why you?” qismini kuchaytirish.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon">💬</div>
+        <div class="inc-title">Doimiy qo‘llab-quvvatlash</div>
+        <div class="inc-desc">Jarayon davomida savol-javob va feedback: mentor bilan tezkor aloqa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-sec" id="contact">
+  <div class="container">
+    <div class="contact-card">
+      <div>
+        <div class="sch-badge" style="margin-bottom:12px">🧾 Paket</div>
+        <h2>Grants — 350,000 so'm</h2>
+        <p>
+          Maqsadni aniqlab olamiz, program tanlaymiz va submitgacha barcha bosqichlarni birga yopamiz.
+          Sizda allaqachon program bo‘lsa ham, shu program’ga moslab ishlaymiz.
+        </p>
+      </div>
+      <div class="contact-btns">
+        <a href="/student/royxat/" class="btn btn-teal btn-lg" style="border-radius:12px">🚀 Boshlash →</a>
+        <a href="/mentorlar/?yonalish=ingliz_tili" class="btn btn-ghost btn-lg" style="border-radius:12px">Mentorlarni ko'rish</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
