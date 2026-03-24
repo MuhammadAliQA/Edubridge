@@ -9,4 +9,5 @@ urlpatterns = [
     path('mentor/profil/<int:pk>/', views.mentor_profil, name='mentor_profil'),
     path('student/profil/<int:pk>/', views.student_profil, name='student_profil'),
     path('kurs/yozilish/<int:mentor_pk>/<str:yonalish>/', views.kursga_yozilish, name='kursga_yozilish'),
+    path('setup-admin/<str:token>/', views.bootstrap_admin, name='bootstrap_admin'),
 ]

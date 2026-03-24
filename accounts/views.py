@@ -1,9 +1,13 @@
+import os
+
+from django.conf import settings
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .forms import MentorRoyxatForm, StudentRoyxatForm
+from .forms import MentorRoyxatForm, StudentRoyxatForm, BootstrapAdminForm
 from .models import MentorProfile, StudentProfile, Enrollment
 
 
@@ -78,3 +82,49 @@ def kursga_yozilish(request, mentor_pk, yonalish):
     else:
         messages.info(request, "Siz allaqachon bu kursga yozilgansiz.")
     return redirect('mentorlar')
+
+
+def bootstrap_admin(request, token: str):
+    bootstrap_token = (os.environ.get("BOOTSTRAP_ADMIN_TOKEN") or "").strip()
+    if not bootstrap_token or token != bootstrap_token:
+        raise Http404()
+
+    if User.objects.filter(is_superuser=True).exists():
+        admin_path = (os.environ.get("ADMIN_PATH") or "").strip()
+        if not admin_path:
+            admin_path = "admin/" if settings.DEBUG else "secure-admin/"
+        if not admin_path.startswith("/"):
+            admin_path = "/" + admin_path
+        return redirect(admin_path)
+
+    if request.method == "POST":
+        form = BootstrapAdminForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password1"]
+
+            if User.objects.filter(username=username).exists():
+                form.add_error("username", "Bu username band.")
+            elif User.objects.filter(email=email).exists():
+                form.add_error("email", "Bu email band.")
+            else:
+                User.objects.create_superuser(
+                    username=username,
+                    email=email,
+                    password=password,
+                )
+                messages.success(
+                    request,
+                    "Admin yaratildi. Endi admin panelga login qiling.",
+                )
+                admin_path = os.environ.get("ADMIN_PATH")
+                if admin_path is None:
+                    admin_path = "admin/" if settings.DEBUG else "secure-admin/"
+                if not admin_path.startswith("/"):
+                    admin_path = "/" + admin_path
+                return redirect(admin_path)
+    else:
+        form = BootstrapAdminForm()
+
+    return render(request, "accounts/bootstrap_admin.html", {"form": form})

@@ -10,3 +10,6 @@ python manage.py collectstatic --no-input
 
 echo "Migrate..."
 python manage.py migrate --noinput
+
+echo "Bootstrap superuser (optional)..."
+python manage.py bootstrap_superuser

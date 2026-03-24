@@ -92,3 +92,34 @@ class StudentRoyxatForm(UserCreationForm):
                 kutish=self.cleaned_data['kutish'],
             )
         return user
+
+
+class BootstrapAdminForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        label="Username",
+        widget=forms.TextInput(attrs={"placeholder": "admin"}),
+    )
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"placeholder": "admin@example.com"}),
+    )
+    password1 = forms.CharField(
+        label="Parol",
+        widget=forms.PasswordInput(attrs={"placeholder": "Kuchli parol"}),
+    )
+    password2 = forms.CharField(
+        label="Parolni tasdiqlang",
+        widget=forms.PasswordInput(attrs={"placeholder": "Parolni qayta kiriting"}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("password1") != cleaned_data.get("password2"):
+            self.add_error("password2", "Parollar mos emas.")
+        return cleaned_data

@@ -1,6 +1,24 @@
+import os
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import MentorProfile, YONALISHLAR
 from .models import FreeDars
+
+
+def healthz(_request):
+    User = get_user_model()
+    return JsonResponse(
+        {
+            "ok": True,
+            "debug": settings.DEBUG,
+            "admin_path": os.environ.get("ADMIN_PATH"),
+            "render_git_commit": os.environ.get("RENDER_GIT_COMMIT"),
+            "superuser_count": User.objects.filter(is_superuser=True).count(),
+        }
+    )
 
 
 def bosh_sahifa(request):
