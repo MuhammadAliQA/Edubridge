@@ -10,6 +10,20 @@ from django.contrib.auth.models import User
 from .forms import MentorRoyxatForm, StudentRoyxatForm, BootstrapAdminForm, PaymentSubmissionForm
 from .models import MentorProfile, StudentProfile, Enrollment, PaymentSubmission, YONALISHLAR
 
+# ─────────────────────────────────────────────
+# FIX 1: Narxlar bir joyda — yangi 4 tarif bilan
+# ─────────────────────────────────────────────
+TARIF_NARXLARI = {
+    "free":        0,
+    "premium":     150_000,
+    "admission":   250_000,
+    "grants":      350_000,
+    # mavjud yonalishlar uchun fallback
+    "ielts":       150_000,
+    "sat":         150_000,
+    "ingliz_tili": 250_000,
+}
+
 
 def mentor_royxat(request):
     if request.user.is_authenticated:
@@ -105,7 +119,8 @@ def mentor_profil(request, pk):
             yonalish=mentor.yonalish,
         ).first()
         if my_enrollment:
-            my_latest_payment = my_enrollment.payment_submissions.first()
+            # FIX 2: ordering bo'yicha eng yangi submission
+            my_latest_payment = my_enrollment.payment_submissions.order_by('-created_at').first()
 
     return render(
         request,
@@ -130,8 +145,9 @@ def student_profil(request, pk):
         raise Http404()
 
     enrollments = Enrollment.objects.filter(student=student.user)
+    # FIX 3: ordering bo'yicha eng yangi submission har bir enrollment uchun
     latest_payments = {
-        enrollment.id: enrollment.payment_submissions.first()
+        enrollment.id: enrollment.payment_submissions.order_by('-created_at').first()
         for enrollment in enrollments.select_related("mentor", "student").prefetch_related("payment_submissions")
     }
     return render(
@@ -154,17 +170,24 @@ def kursga_yozilish(request, mentor_pk, yonalish):
     mentor = get_object_or_404(MentorProfile, pk=mentor_pk, tasdiqlangan=True)
     if mentor.yonalish != yonalish:
         raise Http404()
+
     enrollment, created = Enrollment.objects.get_or_create(
         student=request.user,
         mentor=mentor,
-        yonalish=yonalish
+        yonalish=yonalish,
     )
     if created:
         messages.success(request, f"{mentor.get_yonalish_display()} kursiga yozildingiz! To'lovni yakunlang.")
         return redirect("enrollment_payment", enrollment_id=enrollment.id)
     else:
-        messages.info(request, "Siz allaqachon bu kursga yozilgansiz.")
-    return redirect('mentorlar')
+        # FIX 4: allaqachon yozilgan bo'lsa, to'lov sahifasiga yo'naltir
+        latest = enrollment.payment_submissions.order_by('-created_at').first()
+        if not enrollment.to_langan:
+            messages.info(request, "Siz allaqachon bu kursga yozilgansiz. To'lovni yakunlang.")
+            return redirect("enrollment_payment", enrollment_id=enrollment.id)
+        else:
+            messages.info(request, "Siz allaqachon bu kursga to'lov qilgansiz.")
+            return redirect("student_profil", pk=request.user.student_profile.pk)
 
 
 def bootstrap_admin(request, token: str):
@@ -197,10 +220,7 @@ def bootstrap_admin(request, token: str):
                     email=email,
                     password=password,
                 )
-                messages.success(
-                    request,
-                    "Admin yaratildi. Endi admin panelga login qiling.",
-                )
+                messages.success(request, "Admin yaratildi. Endi admin panelga login qiling.")
                 admin_path = os.environ.get("ADMIN_PATH")
                 if admin_path is None:
                     admin_path = "admin/" if settings.DEBUG else "secure-admin/"
@@ -221,15 +241,26 @@ def enrollment_payment(request, enrollment_id: int):
 
     enrollment = get_object_or_404(Enrollment, pk=enrollment_id, student=request.user)
 
+    # Allaqachon to'langan bo'lsa qaytarib yuborish
     if enrollment.to_langan:
         messages.info(request, "To'lov allaqachon tasdiqlangan.")
         if hasattr(request.user, "student_profile"):
             return redirect("student_profil", pk=request.user.student_profile.pk)
         return redirect("/")
 
-    expected_amount = 250000 if enrollment.yonalish == "ingliz_tili" else 150000
-    latest_submission = enrollment.payment_submissions.first()
-    if latest_submission and latest_submission.status == PaymentSubmission.STATUS_PENDING and request.method != "GET":
+    # FIX 5: TARIF_NARXLARI dict orqali — hardcoded emas
+    expected_amount = TARIF_NARXLARI.get(enrollment.yonalish, 150_000)
+
+    # FIX 6: ordering — eng yangi submission
+    latest_submission = enrollment.payment_submissions.order_by('-created_at').first()
+
+    # FIX 7: Faqat PENDING holatda bloklaymiz.
+    # REJECTED bo'lsa — qayta submit qilish mumkin.
+    if (
+        latest_submission
+        and latest_submission.status == PaymentSubmission.STATUS_PENDING
+        and request.method == "POST"
+    ):
         messages.info(request, "To'lov arizasi allaqachon yuborilgan. Admin tekshiradi.")
         return redirect("enrollment_payment", enrollment_id=enrollment.id)
 
@@ -246,20 +277,20 @@ def enrollment_payment(request, enrollment_id: int):
         form = PaymentSubmissionForm()
 
     payment_details = {
-        "card_owner": os.environ.get("PAYMENT_CARD_OWNER", ""),
+        "card_owner":  os.environ.get("PAYMENT_CARD_OWNER", ""),
         "card_number": os.environ.get("PAYMENT_CARD_NUMBER", ""),
-        "phone": os.environ.get("PAYMENT_PHONE", ""),
-        "telegram": os.environ.get("PAYMENT_TELEGRAM", ""),
+        "phone":       os.environ.get("PAYMENT_PHONE", ""),
+        "telegram":    os.environ.get("PAYMENT_TELEGRAM", ""),
     }
 
     return render(
         request,
         "accounts/enrollment_payment.html",
         {
-            "enrollment": enrollment,
-            "expected_amount": expected_amount,
-            "form": form,
-            "payment_details": payment_details,
+            "enrollment":        enrollment,
+            "expected_amount":   expected_amount,
+            "form":              form,
+            "payment_details":   payment_details,
             "latest_submission": latest_submission,
         },
     )
