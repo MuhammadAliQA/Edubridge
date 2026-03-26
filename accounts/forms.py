@@ -15,18 +15,17 @@ class MentorRoyxatForm(UserCreationForm):
     tajriba_yil = forms.IntegerField(min_value=0, max_value=50, label="Tajriba (yil)", initial=1)
     ball = forms.FloatField(required=False, label="IELTS/SAT bali", widget=forms.NumberInput(attrs={'placeholder': '7.5 yoki 1400'}))
     haqida = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'placeholder': "O'zingiz haqingizda qisqacha..."}), label="O'zi haqida", required=False)
-    
-    # 5 ta savol
+
     tajriba = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), label="O'qitish tajribangizni tasvirlab bering")
     metodologiya = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), label="Qanday metodologiya va usullardan foydalanasiz?")
     muvaffaqiyat = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), label="O'quvchilaringizdagi eng katta muvaffaqiyat qanday bo'lgan?")
     vaqt = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), label="Dars vaqtlari qanday bo'lishi mumkin?")
     maqsad = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), label="EduBridge'ga qo'shilish maqsadingiz nima?")
-    
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Foydalanuvchi nomi'
@@ -34,7 +33,7 @@ class MentorRoyxatForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Parolni tasdiqlang'
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
@@ -123,11 +122,11 @@ class StudentRoyxatForm(UserCreationForm):
     )
     yashash_joyi = forms.ChoiceField(choices=VILOYATLAR, label="Yashash joyingiz")
     kutish = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'placeholder': "Bu dasturdan nima kutasiz? Qanday maqsadlaringiz bor?"}), label="Bu dasturdan nimalarni kutasiz?")
-    
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Foydalanuvchi nomi'
@@ -135,7 +134,7 @@ class StudentRoyxatForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Parolni tasdiqlang'
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
@@ -213,17 +212,42 @@ class PaymentSubmissionForm(forms.ModelForm):
         model = PaymentSubmission
         fields = ["method", "payer_name", "payer_phone", "transaction_ref", "receipt_url", "note"]
         widgets = {
-            "note": forms.Textarea(attrs={"rows": 3, "placeholder": "Masalan: qaysi mentor / qaysi sana"}),
-            "transaction_ref": forms.TextInput(attrs={"placeholder": "ixtiyoriy"}),
-            "payer_phone": forms.TextInput(attrs={"placeholder": "+998... (ixtiyoriy)"}),
-            "payer_name": forms.TextInput(attrs={"placeholder": "ixtiyoriy"}),
-            "receipt_url": forms.URLInput(attrs={"placeholder": "https://... (ixtiyoriy)"}),
+            "method": forms.Select(attrs={"class": "form-control"}),
+            "note": forms.Textarea(attrs={
+                "rows": 3,
+                "placeholder": "Masalan: qaysi mentor / qaysi sana"
+            }),
+            "transaction_ref": forms.TextInput(attrs={
+                "placeholder": "Tranzaksiya ID yoki chek raqami (ixtiyoriy)"
+            }),
+            "payer_phone": forms.TextInput(attrs={
+                "placeholder": "+998901234567"
+            }),
+            "payer_name": forms.TextInput(attrs={
+                "placeholder": "Masalan: Samandar Iskandarov"
+            }),
+            "receipt_url": forms.URLInput(attrs={
+                "placeholder": "https://... (ixtiyoriy)"
+            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["transaction_ref"].required = False
+        self.fields["receipt_url"].required = False
+        self.fields["note"].required = False
+        self.fields["payer_name"].required = False
+        self.fields["payer_phone"].required = False
         for field in self.fields.values():
             field.widget.attrs["class"] = "form-control"
+
+    def clean_receipt_url(self):
+        url = (self.cleaned_data.get("receipt_url") or "").strip()
+        if not url:
+            return url
+        if not url.startswith("http://") and not url.startswith("https://"):
+            raise ValidationError("URL http:// yoki https:// bilan boshlanishi kerak.")
+        return url
 
     def clean_payer_phone(self):
         phone = (self.cleaned_data.get("payer_phone") or "").strip()
@@ -233,3 +257,18 @@ class PaymentSubmissionForm(forms.ModelForm):
         if len([ch for ch in normalized if ch.isdigit()]) < 9:
             raise ValidationError("Telefon raqamni to'liq kiriting.")
         return phone
+
+    def clean(self):
+        cleaned_data = super().clean()
+        transaction_ref = (cleaned_data.get("transaction_ref") or "").strip()
+
+        # receipt_url da allaqachon xato bo'lsa, clean ga hojat yo'q
+        if "receipt_url" in self.errors:
+            return cleaned_data
+
+        receipt_url = (cleaned_data.get("receipt_url") or "").strip()
+        if not transaction_ref and not receipt_url:
+            raise ValidationError(
+                "Tranzaksiya ID yoki chek havolasidan kamida birini kiriting."
+            )
+        return cleaned_data

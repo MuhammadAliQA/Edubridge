@@ -100,17 +100,8 @@ class PaymentSubmission(models.Model):
     ]
 
     METHOD_CARD = "card"
-    METHOD_CASH = "cash"
-    METHOD_PAYME = "payme"
-    METHOD_CLICK = "click"
-    METHOD_OTHER = "other"
-
     METHOD_CHOICES = [
         (METHOD_CARD, "Karta"),
-        (METHOD_PAYME, "Payme"),
-        (METHOD_CLICK, "Click"),
-        (METHOD_CASH, "Naqd"),
-        (METHOD_OTHER, "Boshqa"),
     ]
 
     enrollment = models.ForeignKey(
