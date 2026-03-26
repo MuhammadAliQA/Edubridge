@@ -1,0 +1,107 @@
+% extends 'base.html' %}
+{% load profile_extras %}
+{% block title %}To'lov — EduBridge{% endblock %}
+
+{% block content %}
+<div class="container" style="padding:36px 0 80px;max-width:860px">
+  <div class="section-card">
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:8px">
+      To'lov
+    </h1>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">
+      Mentor: <strong style="color:var(--text)">{{ enrollment.mentor.user.get_full_name }}</strong> ·
+      Yo'nalish: <strong style="color:var(--text)">{{ enrollment.get_yonalish_display }}</strong> ·
+      Summa: <strong style="color:var(--text)">{{ expected_amount }} so'm</strong>
+    </p>
+
+    {% if latest_submission and latest_submission.status == 'pending' %}
+      <div class="msg success" style="position:relative;top:0;right:0;margin-bottom:14px">
+        To'lov ma'lumotlari yuborilgan. Admin tekshiryapti.
+      </div>
+    {% endif %}
+
+    <div class="pay-grid" style="display:grid;gap:14px;grid-template-columns:1fr 1fr">
+      <div class="section-card" style="margin:0">
+        <h2 style="font-size:1rem;font-weight:800;margin-bottom:10px">To'lov rekvizitlari</h2>
+        <div style="color:var(--muted);font-size:.9rem;line-height:1.7">
+          {% if payment_details.card_number %}
+            <div><strong style="color:var(--text)">Karta:</strong> {{ payment_details.card_number }}</div>
+          {% else %}
+            <div>Karta raqami hozircha sozlanmagan (Render env: <code>PAYMENT_CARD_NUMBER</code>).</div>
+          {% endif %}
+          {% if payment_details.card_owner %}
+            <div><strong style="color:var(--text)">Ega:</strong> {{ payment_details.card_owner }}</div>
+          {% endif %}
+          {% if payment_details.phone %}
+            <div><strong style="color:var(--text)">Telefon:</strong> {{ payment_details.phone }}</div>
+          {% endif %}
+          {% if payment_details.telegram %}
+            <div><strong style="color:var(--text)">Telegram:</strong> <a href="{{ payment_details.telegram }}" style="color:var(--blue-b)">{{ payment_details.telegram }}</a></div>
+          {% endif %}
+        </div>
+        <div style="margin-top:12px;color:var(--muted);font-size:.85rem">
+          Izohga mentor ismi va yo'nalishni yozib yuboring.
+        </div>
+      </div>
+
+      <div class="section-card" style="margin:0">
+        <h2 style="font-size:1rem;font-weight:800;margin-bottom:10px">To'lov ma'lumotini yuborish</h2>
+        <div style="color:var(--muted);font-size:.85rem;margin-bottom:10px">
+          Summa avtomatik: <strong style="color:var(--text)">{{ expected_amount }} so'm</strong>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div style="display:grid;gap:10px">
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.method.label }}</label>
+              {{ form.method }}
+              {% if form.method.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.method.errors|striptags }}</div>{% endif %}
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.transaction_ref.label }}</label>
+              {{ form.transaction_ref }}
+              {% if form.transaction_ref.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.transaction_ref.errors|striptags }}</div>{% endif %}
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.receipt_url.label }}</label>
+              {{ form.receipt_url }}
+              {% if form.receipt_url.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.receipt_url.errors|striptags }}</div>{% endif %}
+              <div style="color:var(--muted2);font-size:.78rem;margin-top:6px">Chekni Google Drive/Telegram link qilib qo'yishingiz mumkin.</div>
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.payer_name.label }}</label>
+              {{ form.payer_name }}
+              {% if form.payer_name.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.payer_name.errors|striptags }}</div>{% endif %}
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.payer_phone.label }}</label>
+              {{ form.payer_phone }}
+              {% if form.payer_phone.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.payer_phone.errors|striptags }}</div>{% endif %}
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px">{{ form.note.label }}</label>
+              {{ form.note }}
+              {% if form.note.errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:6px">{{ form.note.errors|striptags }}</div>{% endif %}
+            </div>
+          </div>
+
+          {% if form.non_field_errors %}<div style="color:#fca5a5;font-size:.82rem;margin-top:10px">{{ form.non_field_errors|striptags }}</div>{% endif %}
+
+          <button type="submit" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:12px">
+            Yuborish
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;color:var(--muted);font-size:.85rem">
+      Admin tasdiqlagandan keyin yozilish avtomatik <strong style="color:var(--text)">to'langan</strong> bo'ladi.
+    </div>
+  </div>
+</div>
+<style>
+@media(max-width:900px){
+  .pay-grid{grid-template-columns:1fr}
+}
+</style>
+{% endblock %}

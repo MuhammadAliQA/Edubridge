@@ -80,7 +80,7 @@
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
         <span class="badge badge-{{ mentor.yonalish }}">{{ mentor.get_yonalish_display }}</span>
-        {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Ball: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+        {% if mentor|score_value %}<span style="font-size:.78rem;color:var(--muted)">{{ mentor|score_label }}: <strong style="color:var(--text)">{{ mentor|score_value }}</strong></span>{% endif %}
         <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
       </div>
       {% if mentor.haqida %}

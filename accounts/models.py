@@ -22,6 +22,7 @@ YONALISHLAR = [
     ('ielts', 'IELTS'),
     ('sat', 'SAT'),
     ('ingliz_tili', 'Admission'),
+    ('grants', 'Grants'),
 ]
 
 class MentorProfile(models.Model):
@@ -32,7 +33,7 @@ class MentorProfile(models.Model):
     haqida = models.TextField(blank=True, verbose_name="O'zi haqida")
     ball = models.FloatField(null=True, blank=True, verbose_name="IELTS/SAT bali")
     
-    # 5 ta savol javobi
+
     tajriba = models.TextField(verbose_name="O'qitish tajribangiz?")
     metodologiya = models.TextField(verbose_name="Qanday metodologiya ishlatiladi?")
     muvaffaqiyat = models.TextField(verbose_name="O'quvchilardagi eng katta muvaffaqiyat?")
@@ -85,3 +86,63 @@ class Enrollment(models.Model):
     
     def __str__(self):
         return f"{self.student.username} → {self.mentor}"
+
+
+class PaymentSubmission(models.Model):
+    STATUS_PENDING = "pending"
+    STATUS_APPROVED = "approved"
+    STATUS_REJECTED = "rejected"
+
+    STATUS_CHOICES = [
+        (STATUS_PENDING, "Kutilmoqda"),
+        (STATUS_APPROVED, "Tasdiqlandi"),
+        (STATUS_REJECTED, "Rad etildi"),
+    ]
+
+    METHOD_CARD = "card"
+    METHOD_CASH = "cash"
+    METHOD_PAYME = "payme"
+    METHOD_CLICK = "click"
+    METHOD_OTHER = "other"
+
+    METHOD_CHOICES = [
+        (METHOD_CARD, "Karta"),
+        (METHOD_PAYME, "Payme"),
+        (METHOD_CLICK, "Click"),
+        (METHOD_CASH, "Naqd"),
+        (METHOD_OTHER, "Boshqa"),
+    ]
+
+    enrollment = models.ForeignKey(
+        Enrollment,
+        on_delete=models.CASCADE,
+        related_name="payment_submissions",
+        verbose_name="Yozilish",
+    )
+    amount = models.PositiveIntegerField(verbose_name="Summa (so'm)")
+    method = models.CharField(max_length=20, choices=METHOD_CHOICES, default=METHOD_CARD)
+    payer_name = models.CharField(max_length=120, blank=True, verbose_name="To'lov qiluvchi (ixtiyoriy)")
+    payer_phone = models.CharField(max_length=50, blank=True, verbose_name="Telefon (ixtiyoriy)")
+    transaction_ref = models.CharField(max_length=120, blank=True, verbose_name="Tranzaksiya ID (ixtiyoriy)")
+    receipt_url = models.URLField(blank=True, verbose_name="Chek havolasi (ixtiyoriy)")
+    note = models.TextField(blank=True, verbose_name="Izoh (ixtiyoriy)")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "To'lov arizasi"
+        verbose_name_plural = "To'lov arizalari"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.enrollment_id} - {self.amount} - {self.status}"
+
+    @property
+    def expected_amount(self) -> int:
+        return 250000 if self.enrollment.yonalish == "ingliz_tili" else 150000
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.status == self.STATUS_APPROVED:
+            Enrollment.objects.filter(pk=self.enrollment_id).update(to_langan=True)

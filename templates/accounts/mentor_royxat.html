@@ -23,7 +23,6 @@
   <div class="auth-box">
     <div class="auth-logo">EduBridge</div>
     <div class="auth-title" data-i18n="mentor_reg.title">Mentor bo'lish</div>
-    <div class="auth-sub" data-i18n="mentor_reg.sub">Har bir o'quvchidan 200,000 so'm ishlang</div>
 
     <div class="auth-card">
       <div class="info-banner">
@@ -32,68 +31,89 @@
 
       <form method="post" novalidate>
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="info-banner" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5">
+          Xatolik bor. Iltimos, quyidagi maydonlarni tekshiring:
+          <ul class="errorlist" style="margin-top:10px">
+            {% for field in form %}
+              {% if field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ field.errors|striptags }}</li>
+              {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+              {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+        {% endif %}
 
         <div class="form-section">👤 <span data-i18n="form.personal">Shaxsiy ma'lumotlar</span></div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.first_name.label }}</label>
+            <label class="form-label" data-i18n="form.first_name">Ism</label>
             {{ form.first_name }}
             {% if form.first_name.errors %}<ul class="errorlist">{% for e in form.first_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.last_name.label }}</label>
+            <label class="form-label" data-i18n="form.last_name">Familiya</label>
             {{ form.last_name }}
             {% if form.last_name.errors %}<ul class="errorlist">{% for e in form.last_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ form.email.label }}</label>
+          <label class="form-label" data-i18n="form.email">Email</label>
           {{ form.email }}
           {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.username.label }}</label>
+            <label class="form-label" data-i18n="form.username">Username</label>
             {{ form.username }}
             {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.tajriba_yil.label }}</label>
+            <label class="form-label" data-i18n="mentor_reg.exp_years">Tajriba (yil)</label>
             {{ form.tajriba_yil }}
+            {% if form.tajriba_yil.errors %}<ul class="errorlist">{% for e in form.tajriba_yil.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.password1.label }}</label>
+            <label class="form-label" data-i18n="form.password1">Parol</label>
             {{ form.password1 }}
             {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.password2.label }}</label>
+            <label class="form-label" data-i18n="form.password2">Parolni tasdiqlang</label>
             {{ form.password2 }}
+            {% if form.password2.errors %}<ul class="errorlist">{% for e in form.password2.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
 
         <div class="form-section">🎯 <span data-i18n="form.direction">Yo'nalish va joylashuv</span></div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.yonalish.label }}</label>
+            <label class="form-label" data-i18n="mentor_reg.direction">Yo'nalish</label>
             {{ form.yonalish }}
+            {% if form.yonalish.errors %}<ul class="errorlist">{% for e in form.yonalish.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.viloyat.label }}</label>
+            <label class="form-label" data-i18n="mentor_reg.region">Viloyat</label>
             {{ form.viloyat }}
+            {% if form.viloyat.errors %}<ul class="errorlist">{% for e in form.viloyat.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.ball.label }}</label>
+            <label class="form-label" data-i18n="mentor_reg.score">Ball (ixtiyoriy)</label>
             {{ form.ball }}
             <div class="form-hint" data-i18n="form.score_hint">IELTS: 7.5 | SAT: 1450</div>
+            {% if form.ball.errors %}<ul class="errorlist">{% for e in form.ball.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.haqida.label }}</label>
+            <label class="form-label" data-i18n="mentor_reg.about">O'zi haqida (ixtiyoriy)</label>
             {{ form.haqida }}
+            {% if form.haqida.errors %}<ul class="errorlist">{% for e in form.haqida.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
 
@@ -101,25 +121,32 @@
         <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px" data-i18n="form.questions_hint">Ushbu savollarga to'liq javob bering — o'quvchilar profilingizda ko'radi.</p>
 
         <div class="q-box">
-          <div class="q-label"><span class="q-num">1</span>{{ form.tajriba.label }}</div>
+          <div class="q-label"><span class="q-num">1</span><span data-i18n="mentor_reg.q1">O'qitish tajribangizni tasvirlab bering</span></div>
           {{ form.tajriba }}
+          {% if form.tajriba.errors %}<ul class="errorlist" style="margin-top:10px">{% for e in form.tajriba.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="q-box">
-          <div class="q-label"><span class="q-num">2</span>{{ form.metodologiya.label }}</div>
+          <div class="q-label"><span class="q-num">2</span><span data-i18n="mentor_reg.q2">Qanday metodologiya va usullardan foydalanasiz?</span></div>
           {{ form.metodologiya }}
+          {% if form.metodologiya.errors %}<ul class="errorlist" style="margin-top:10px">{% for e in form.metodologiya.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="q-box">
-          <div class="q-label"><span class="q-num">3</span>{{ form.muvaffaqiyat.label }}</div>
+          <div class="q-label"><span class="q-num">3</span><span data-i18n="mentor_reg.q3">O'quvchilaringizdagi eng katta muvaffaqiyat qanday bo'lgan?</span></div>
           {{ form.muvaffaqiyat }}
+          {% if form.muvaffaqiyat.errors %}<ul class="errorlist" style="margin-top:10px">{% for e in form.muvaffaqiyat.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="q-box">
-          <div class="q-label"><span class="q-num">4</span>{{ form.vaqt.label }}</div>
+          <div class="q-label"><span class="q-num">4</span><span data-i18n="mentor_reg.q4">Dars vaqtlari qanday bo'lishi mumkin?</span></div>
           {{ form.vaqt }}
+          {% if form.vaqt.errors %}<ul class="errorlist" style="margin-top:10px">{% for e in form.vaqt.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="q-box">
-          <div class="q-label"><span class="q-num">5</span>{{ form.maqsad.label }}</div>
+          <div class="q-label"><span class="q-num">5</span><span data-i18n="mentor_reg.q5">EduBridge'ga qo'shilish maqsadingiz nima?</span></div>
           {{ form.maqsad }}
+          {% if form.maqsad.errors %}<ul class="errorlist" style="margin-top:10px">{% for e in form.maqsad.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
+
+        {% if form.non_field_errors %}<ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
 
         <button type="submit" class="btn btn-primary btn-full" style="border-radius:12px;padding:13px;margin-top:8px;font-size:.95rem">
           🚀 <span data-i18n="mentor_reg.submit">Ariza yuborish</span>

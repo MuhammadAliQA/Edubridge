@@ -28,7 +28,7 @@
 <div class="page-hero">
   <div class="sec-tag" data-i18n="free_page.tag">Bepul</div>
   <h1 data-i18n="free_page.title">Bepul IELTS va SAT konsultatsiyasi</h1>
-  <p data-i18n="free_page.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS yoki SAT bo'yicha birini tanlang.</p>
+  <p data-i18n="free_page.desc">Bepul konsultatsiyalar jadval bo'yicha e'lon qilinadi. Darslar Zoom yoki Google Meet orqali bo'ladi — sayt ichida live video yo'q.</p>
   <div class="hero-pills">
     <span class="hero-pill">🎯 <span data-i18n="free.pill_once">Bir martalik</span></span>
     <span class="hero-pill">⏱ 1 soat</span>
@@ -48,7 +48,7 @@
         </div>
         <div style="color:var(--muted);font-size:.85rem;line-height:1.6">
           <div>👨‍🏫 {{ dars.mentor.user.get_full_name }}</div>
-          <div>🗓 {{ dars.sana|date:"d.m.Y H:i" }} · ⏱ {{ dars.davomiylik }} min</div>
+          <div>🗓 {{ dars.sana|date:"d.m.Y H:i" }} · ⏱ {{ dars.davomiylik }} min · 🔗 {{ dars.platform_label }}</div>
         </div>
         {% if dars.haqida %}
           <div style="font-size:.85rem;color:var(--muted);line-height:1.6">{{ dars.haqida|truncatechars:140 }}</div>

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from accounts.models import MentorProfile, YONALISHLAR
 from .models import FreeDars
 
@@ -34,12 +35,17 @@ def bosh_sahifa(request):
         yonalish='ingliz_tili', tasdiqlangan=True
     ).order_by('-reytinq')[:3]
 
-    kelayotgan_free = FreeDars.objects.all().order_by('sana')[:5]
+    top_grants = MentorProfile.objects.filter(
+        yonalish='grants', tasdiqlangan=True
+    ).order_by('-reytinq')[:3]
+
+    kelayotgan_free = FreeDars.objects.filter(sana__gte=timezone.now()).order_by('sana')[:5]
 
     context = {
         'top_ielts': top_ielts,
         'top_sat': top_sat,
         'top_ingliz': top_ingliz,
+        'top_grants': top_grants,
         'kelayotgan_free': kelayotgan_free,
         'narx': 300000,
         'mentor_ulushi': 200000,
@@ -72,7 +78,7 @@ def mentorlar(request):
 
 
 def free_darslar(request):
-    darslar = FreeDars.objects.all().order_by('-sana')
+    darslar = FreeDars.objects.filter(sana__gte=timezone.now()).order_by('sana')
     return render(request, 'courses/free_darslar.html', {'darslar': darslar})
 
 

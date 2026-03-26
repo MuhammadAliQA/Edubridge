@@ -7,11 +7,13 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 
+
 def handler404_view(request, exception):
     from django.shortcuts import render
     return render(request, '404.html', status=404)
 
 handler404 = handler404_view
+
 
 def blocked_admin(_request):
     raise Http404()
@@ -42,17 +44,14 @@ if ADMIN_PATH is None:
     ADMIN_PATH = 'admin/' if settings.DEBUG else 'secure-admin/'
 if not ADMIN_PATH.endswith('/'):
     ADMIN_PATH += '/'
-
 urlpatterns = [
     path('healthz/', healthz),
     path('favicon.ico', favicon_redirect),
-    path('admin/', blocked_admin) if (not settings.DEBUG and ADMIN_PATH != 'admin/') else path('admin/', admin.site.urls),
+    path('admin/', blocked_admin) if (not settings.DEBUG and ADMIN_PATH != 'admin/') else None,
     path('', include('courses.urls')),
     path('', include('accounts.urls')),
 ]
-
-if not (settings.DEBUG and ADMIN_PATH == 'admin/'):
-    urlpatterns.insert(1, path(ADMIN_PATH, admin.site.urls))
-
+urlpatterns = [u for u in urlpatterns if u is not None]
+urlpatterns.insert(0, path(ADMIN_PATH, admin.site.urls))
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

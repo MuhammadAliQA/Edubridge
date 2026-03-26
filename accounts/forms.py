@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from .models import MentorProfile, StudentProfile, VILOYATLAR, YONALISHLAR
+from .models import PaymentSubmission
 
 
 class MentorRoyxatForm(UserCreationForm):
@@ -55,13 +57,70 @@ class MentorRoyxatForm(UserCreationForm):
             )
         return user
 
+    def clean_ball(self):
+        ball = self.cleaned_data.get("ball")
+        yonalish = self.cleaned_data.get("yonalish")
+        if ball in (None, ""):
+            return ball
+
+        try:
+            ball_f = float(ball)
+        except (TypeError, ValueError):
+            raise ValidationError("Ball noto'g'ri formatda.")
+
+        if yonalish == "ielts":
+            if not (0 < ball_f <= 9):
+                raise ValidationError("IELTS band 0-9 oralig'ida bo'lishi kerak (masalan 7.5).")
+        elif yonalish == "sat":
+            if not (400 <= ball_f <= 1600):
+                raise ValidationError("SAT ball 400-1600 oralig'ida bo'lishi kerak (masalan 1450).")
+        else:
+            return None
+
+        return ball_f
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        def _min_text(field_name: str, min_len: int = 15):
+            value = (cleaned_data.get(field_name) or "").strip()
+            if len(value) < min_len:
+                self.add_error(field_name, f"Kamida {min_len} ta belgidan iborat bo'lsin.")
+                return
+            if value.isdigit():
+                self.add_error(field_name, "Faqat son bo'lmasin, to'liq izoh yozing.")
+
+        _min_text("tajriba", 15)
+        _min_text("metodologiya", 15)
+        _min_text("muvaffaqiyat", 15)
+        _min_text("vaqt", 10)
+        _min_text("maqsad", 15)
+
+        haqida = (cleaned_data.get("haqida") or "").strip()
+        if haqida and len(haqida) < 15:
+            self.add_error("haqida", "Kamida 15 ta belgidan iborat bo'lsin.")
+
+        return cleaned_data
+
+    def clean_email(self):
+        email = (self.cleaned_data.get("email") or "").strip().lower()
+        if not email:
+            return email
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("Bu email bilan user allaqachon mavjud.")
+        return email
+
 
 class StudentRoyxatForm(UserCreationForm):
     first_name = forms.CharField(max_length=50, label="Ism", widget=forms.TextInput(attrs={'placeholder': 'Ismingiz'}))
     last_name = forms.CharField(max_length=50, label="Familiya", widget=forms.TextInput(attrs={'placeholder': 'Familiyangiz'}))
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={'placeholder': 'Email manzilingiz'}))
-    yosh = forms.IntegerField(min_value=10, max_value=50, label="Yoshingiz")
-    o_qish_joyi = forms.CharField(max_length=200, label="O'qish joyingiz", widget=forms.TextInput(attrs={'placeholder': 'Maktab/Universitet nomi'}))
+    yosh = forms.IntegerField(min_value=7, max_value=80, label="Yoshingiz")
+    o_qish_joyi = forms.CharField(
+        max_length=200,
+        label="O'qish/ish joyingiz",
+        widget=forms.TextInput(attrs={'placeholder': "Maktab/Universitet/Ish joyi (bitirgan bo'lsangiz ham yozing)"}),
+    )
     yashash_joyi = forms.ChoiceField(choices=VILOYATLAR, label="Yashash joyingiz")
     kutish = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'placeholder': "Bu dasturdan nima kutasiz? Qanday maqsadlaringiz bor?"}), label="Bu dasturdan nimalarni kutasiz?")
     
@@ -93,6 +152,30 @@ class StudentRoyxatForm(UserCreationForm):
             )
         return user
 
+    def clean_email(self):
+        email = (self.cleaned_data.get("email") or "").strip().lower()
+        if not email:
+            return email
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("Bu email bilan user allaqachon mavjud.")
+        return email
+
+    def clean_kutish(self):
+        value = (self.cleaned_data.get("kutish") or "").strip()
+        if len(value) < 20:
+            raise ValidationError("Kamida 20 ta belgidan iborat bo'lsin.")
+        if value.isdigit():
+            raise ValidationError("Faqat son bo'lmasin, to'liq izoh yozing.")
+        return value
+
+    def clean_o_qish_joyi(self):
+        value = (self.cleaned_data.get("o_qish_joyi") or "").strip()
+        if len(value) < 3:
+            raise ValidationError("Kamida 3 ta belgidan iborat bo'lsin.")
+        if value.isdigit():
+            raise ValidationError("Faqat son bo'lmasin.")
+        return value
+
 
 class BootstrapAdminForm(forms.Form):
     username = forms.CharField(
@@ -123,3 +206,30 @@ class BootstrapAdminForm(forms.Form):
         if cleaned_data.get("password1") != cleaned_data.get("password2"):
             self.add_error("password2", "Parollar mos emas.")
         return cleaned_data
+
+
+class PaymentSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = PaymentSubmission
+        fields = ["method", "payer_name", "payer_phone", "transaction_ref", "receipt_url", "note"]
+        widgets = {
+            "note": forms.Textarea(attrs={"rows": 3, "placeholder": "Masalan: qaysi mentor / qaysi sana"}),
+            "transaction_ref": forms.TextInput(attrs={"placeholder": "ixtiyoriy"}),
+            "payer_phone": forms.TextInput(attrs={"placeholder": "+998... (ixtiyoriy)"}),
+            "payer_name": forms.TextInput(attrs={"placeholder": "ixtiyoriy"}),
+            "receipt_url": forms.URLInput(attrs={"placeholder": "https://... (ixtiyoriy)"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+    def clean_payer_phone(self):
+        phone = (self.cleaned_data.get("payer_phone") or "").strip()
+        if not phone:
+            return phone
+        normalized = "".join(ch for ch in phone if ch.isdigit() or ch == "+")
+        if len([ch for ch in normalized if ch.isdigit()]) < 9:
+            raise ValidationError("Telefon raqamni to'liq kiriting.")
+        return phone

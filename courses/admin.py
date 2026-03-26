@@ -9,6 +9,6 @@ class KursAdmin(admin.ModelAdmin):
 
 @admin.register(FreeDars)
 class FreeDarsAdmin(admin.ModelAdmin):
-    list_display = ['sarlavha', 'yonalish', 'mentor', 'sana', 'davomiylik']
+    list_display = ['sarlavha', 'yonalish', 'mentor', 'sana', 'davomiylik', 'platform']
     list_filter = ['yonalish']
     ordering = ['sana']

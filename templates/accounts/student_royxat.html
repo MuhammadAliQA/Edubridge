@@ -27,67 +27,91 @@
     <div class="benefits">
       <div class="benefit">🎯 <span data-i18n="student_reg.b1">Top mentorlar tanlash</span></div>
       <div class="benefit">📅 <span data-i18n="student_reg.b2">Haftada 3 konsultatsiya, 1.5 soatdan</span></div>
-      <div class="benefit">🆓 <span data-i18n="student_reg.b3">Bepul konsultatsiya mavjud</span></div>
+      <div class="benefit">🆓 <span data-i18n="student_reg.b3">Bepul konsultatsiya (jadval bo'yicha)</span></div>
       <div class="benefit">🏆 <span data-i18n="student_reg.b4">Maqsad balingizga erishing</span></div>
     </div>
 
     <div class="auth-card">
       <form method="post" novalidate>
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="info-banner" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5;margin-bottom:18px">
+          Xatolik bor. Iltimos, quyidagi maydonlarni tekshiring:
+          <ul class="errorlist" style="margin-top:10px">
+            {% for field in form %}
+              {% if field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ field.errors|striptags }}</li>
+              {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+              {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+        {% endif %}
 
         <div class="form-section">👤 <span data-i18n="form.personal">Shaxsiy ma'lumotlar</span></div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.first_name.label }}</label>
+            <label class="form-label" data-i18n="form.first_name">Ism</label>
             {{ form.first_name }}
             {% if form.first_name.errors %}<ul class="errorlist">{% for e in form.first_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.last_name.label }}</label>
+            <label class="form-label" data-i18n="form.last_name">Familiya</label>
             {{ form.last_name }}
+            {% if form.last_name.errors %}<ul class="errorlist">{% for e in form.last_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ form.email.label }}</label>
+          <label class="form-label" data-i18n="form.email">Email</label>
           {{ form.email }}
           {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.username.label }}</label>
+            <label class="form-label" data-i18n="form.username">Username</label>
             {{ form.username }}
             {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.yosh.label }}</label>
+            <label class="form-label" data-i18n="form.age">Yosh</label>
             {{ form.yosh }}
+            <div class="form-hint" data-i18n="student_reg.age_hint">7–80 oralig'ida</div>
+            {% if form.yosh.errors %}<ul class="errorlist">{% for e in form.yosh.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">{{ form.password1.label }}</label>
+            <label class="form-label" data-i18n="form.password1">Parol</label>
             {{ form.password1 }}
             {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
           <div class="form-group">
-            <label class="form-label">{{ form.password2.label }}</label>
+            <label class="form-label" data-i18n="form.password2">Parolni tasdiqlang</label>
             {{ form.password2 }}
+            {% if form.password2.errors %}<ul class="errorlist">{% for e in form.password2.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
           </div>
         </div>
 
         <div class="form-section">📍 <span data-i18n="form.extra">Qo'shimcha ma'lumotlar</span></div>
         <div class="form-group">
-          <label class="form-label">{{ form.o_qish_joyi.label }}</label>
+          <label class="form-label" data-i18n="student_reg.place">O'qish/ish joyi</label>
           {{ form.o_qish_joyi }}
+          {% if form.o_qish_joyi.errors %}<ul class="errorlist">{% for e in form.o_qish_joyi.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="form-group">
-          <label class="form-label">{{ form.yashash_joyi.label }}</label>
+          <label class="form-label" data-i18n="student_reg.region">Yashash joyi</label>
           {{ form.yashash_joyi }}
+          {% if form.yashash_joyi.errors %}<ul class="errorlist">{% for e in form.yashash_joyi.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
         <div class="form-group">
-          <label class="form-label">{{ form.kutish.label }}</label>
+          <label class="form-label" data-i18n="student_reg.expectations">Nimalarni kutasiz?</label>
           {{ form.kutish }}
+          {% if form.kutish.errors %}<ul class="errorlist">{% for e in form.kutish.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
         </div>
+
+        {% if form.non_field_errors %}<ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
 
         <button type="submit" class="btn btn-primary btn-full" style="border-radius:12px;padding:13px;font-size:.95rem">
           📚 <span data-i18n="student_reg.submit">Ro'yxatdan o'tish</span>

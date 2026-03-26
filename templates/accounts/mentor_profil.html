@@ -74,7 +74,7 @@
         </div>
         <div class="profil-tags">
           <span class="profil-tag">{{ mentor.get_yonalish_display }}</span>
-          {% if mentor.ball %}<span class="profil-tag">Ball: {{ mentor.ball }}</span>{% endif %}
+          {% if mentor|score_value %}<span class="profil-tag">{{ mentor|score_label }}: {{ mentor|score_value }}</span>{% endif %}
           <span class="profil-tag">{{ mentor.get_viloyat_display }}</span>
         </div>
       </div>
@@ -151,10 +151,33 @@
             <div class="stat-box"><span class="n">1.5h</span><div class="l" data-i18n="profil.each">har biri</div></div>
           </div>
           {% if user.is_authenticated %}
-            {% if not user|has_mentor_profile %}
-            <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
-              🎓 <span data-i18n="profil.enroll">Konsultatsiyaga yozilish</span>
-            </a>
+            {% if my_enrollment %}
+              {% if my_enrollment.to_langan %}
+              <div class="msg success" style="position:relative;top:0;right:0;margin-top:10px">
+                ✅ To'lov tasdiqlangan. Siz yozilgansiz.
+              </div>
+              {% else %}
+              <a href="/payment/{{ my_enrollment.id }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
+                💳 To'lovni yakunlash →
+              </a>
+              {% if my_latest_payment and my_latest_payment.status == 'pending' %}
+              <div style="color:var(--muted);font-size:.85rem;margin-top:8px">To'lov arizasi yuborilgan, admin tekshiradi.</div>
+              {% endif %}
+              {% endif %}
+            {% else %}
+              {% if user|has_student_profile %}
+              <a href="/kurs/yozilish/{{ mentor.pk }}/{{ mentor.yonalish }}/" class="btn btn-primary btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
+                🎓 <span data-i18n="profil.enroll">Konsultatsiyaga yozilish</span>
+              </a>
+              {% elif user|has_mentor_profile %}
+              <div style="color:var(--muted);font-size:.85rem;margin-top:10px;line-height:1.6">
+                Siz mentor sifatida kirdingiz. Yozilish faqat o'quvchilar uchun.
+              </div>
+              {% else %}
+              <a href="/student/royxat/" class="btn btn-orange btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
+                O'quvchi bo'lib ro'yxatdan o'tish →
+              </a>
+              {% endif %}
             {% endif %}
           {% else %}
           <a href="/student/royxat/" class="btn btn-orange btn-full" style="border-radius:12px;padding:12px;margin-top:4px">
@@ -168,20 +191,18 @@
           <div class="info-row"><span data-i18n="profil.subject">Yo'nalish</span><strong>{{ mentor.get_yonalish_display }}</strong></div>
           <div class="info-row"><span data-i18n="profil.region">Viloyat</span><strong>{{ mentor.get_viloyat_display }}</strong></div>
           <div class="info-row"><span data-i18n="profil.experience">Tajriba</span><strong>{{ mentor.tajriba_yil }} yil</strong></div>
-          {% if mentor.ball %}
-          <div class="info-row"><span data-i18n="profil.score">Bali</span><strong>{{ mentor.ball }}</strong></div>
+          {% if mentor|score_value %}
+          <div class="info-row"><span data-i18n="profil.score">{{ mentor|score_label }}</span><strong>{{ mentor|score_value }}</strong></div>
           {% endif %}
         </div>
 
-        {% if mentor.yonalish != 'ingliz_tili' %}
         <div class="section-card">
           <div class="free-box">
             <h4>🆓 <span data-i18n="profil.free_title">Bepul konsultatsiya</span></h4>
-            <p data-i18n="profil.free_desc">Bu mentor 1 soatlik bepul konsultatsiya o'tkazadi.</p>
+            <p>Bepul konsultatsiyalar jadval bo‘yicha e’lon qilinadi (Zoom/Meet).</p>
           </div>
-          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Bepul konsultatsiyaga qarang</a>
+          <a href="/free-darslar/" class="btn btn-green btn-full" style="border-radius:12px;padding:11px" data-i18n="profil.free_btn">Jadvalni ko'rish</a>
         </div>
-        {% endif %}
       </div>
     </div>
 

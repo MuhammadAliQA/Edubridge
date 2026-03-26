@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import warnings
 from django.core.exceptions import ImproperlyConfigured
 
 SKIP_DOTENV = os.environ.get('SKIP_DOTENV', 'False') == 'True'
@@ -16,7 +17,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-edubridge-change-in-p
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+def _split_csv(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+ALLOWED_HOSTS = _split_csv(os.environ.get("ALLOWED_HOSTS", "*"))
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -59,10 +63,21 @@ TEMPLATES = [
     },
 ]
 
+CSRF_FAILURE_VIEW = "edubridge.views.csrf_failure"
+
 WSGI_APPLICATION = 'edubridge.wsgi.application'
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 REQUIRE_DATABASE_URL = os.environ.get('REQUIRE_DATABASE_URL', 'False') == 'True'
+if DATABASE_URL and DEBUG:
+    allow_remote_db_in_debug = os.environ.get("ALLOW_REMOTE_DB_IN_DEBUG", "False") == "True"
+    if (not allow_remote_db_in_debug) and ("render.com" in DATABASE_URL):
+        warnings.warn(
+            "DATABASE_URL points to Render; using local SQLite in DEBUG. "
+            "Set ALLOW_REMOTE_DB_IN_DEBUG=True to override.",
+            RuntimeWarning,
+        )
+        DATABASE_URL = None
 if DATABASE_URL:
     import dj_database_url
     DATABASES = {
@@ -105,6 +120,45 @@ AUTH_USER_MODEL = 'auth.User'
 LOGIN_URL = '/kirish/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+IS_PROD = (not DEBUG) and (
+    os.environ.get("REQUIRE_SECRET_KEY", "False") == "True"
+    or os.environ.get("REQUIRE_DATABASE_URL", "False") == "True"
+)
+
+if not DEBUG:
+    if IS_PROD and (
+        SECRET_KEY.startswith("django-insecure-")
+        or SECRET_KEY == "django-insecure-edubridge-change-in-production-2024"
+    ):
+        raise ImproperlyConfigured("SECRET_KEY must be set in production.")
+
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+    SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "True") == "True"
+    CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "True") == "True"
+
+    SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", "0"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get("SECURE_HSTS_INCLUDE_SUBDOMAINS", "False") == "True"
+    SECURE_HSTS_PRELOAD = os.environ.get("SECURE_HSTS_PRELOAD", "False") == "True"
+
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+    REFERRER_POLICY = os.environ.get("REFERRER_POLICY", "same-origin")
+
+    csrf_origins = _split_csv(os.environ.get("CSRF_TRUSTED_ORIGINS", ""))
+    render_hostname = (os.environ.get("RENDER_EXTERNAL_HOSTNAME") or "").strip()
+    if render_hostname:
+        csrf_origins.append(f"https://{render_hostname}")
+    CSRF_TRUSTED_ORIGINS = sorted(set(csrf_origins))
+
+    if IS_PROD and ("*" in ALLOWED_HOSTS or not ALLOWED_HOSTS):
+        render_hostname = (os.environ.get("RENDER_EXTERNAL_HOSTNAME") or "").strip()
+        if render_hostname:
+            ALLOWED_HOSTS = [render_hostname]
+        else:
+            raise ImproperlyConfigured("Set ALLOWED_HOSTS in production (comma-separated).")
 
 # ============ JAZZMIN ADMIN ============
 JAZZMIN_SETTINGS = {

@@ -83,7 +83,10 @@
             {% if e.to_langan %}
               <span class="status-ok" data-i18n="profil.paid">✅ To'langan</span>
             {% else %}
-              <span class="status-wait" data-i18n="profil.pending">⏳ Kutilmoqda</span>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="status-wait" data-i18n="profil.pending">⏳ Kutilmoqda</span>
+                <a href="/payment/{{ e.id }}/" class="btn btn-ghost btn-sm" style="padding:6px 10px;border-radius:10px">To'lov →</a>
+              </div>
             {% endif %}
           </div>
           {% empty %}

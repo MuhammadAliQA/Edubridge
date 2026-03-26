@@ -23,11 +23,22 @@ class Kurs(models.Model):
 
 class FreeDars(models.Model):
     """Bepul IELTS/SAT darslari - haftada 1 marta, 1.5 soat"""
+    PLATFORM_MEET = "meet"
+    PLATFORM_ZOOM = "zoom"
+    PLATFORM_OTHER = "other"
+
+    PLATFORM_CHOICES = [
+        (PLATFORM_MEET, "Google Meet"),
+        (PLATFORM_ZOOM, "Zoom"),
+        (PLATFORM_OTHER, "Boshqa"),
+    ]
+
     sarlavha = models.CharField(max_length=200)
     yonalish = models.CharField(max_length=50, choices=YONALISHLAR)
     mentor = models.ForeignKey(MentorProfile, on_delete=models.CASCADE, related_name='free_darslar')
     sana = models.DateTimeField()
     davomiylik = models.PositiveIntegerField(default=90, help_text="Daqiqada (1.5 soat = 90 daqiqa)")
+    platform = models.CharField(max_length=20, choices=PLATFORM_CHOICES, default=PLATFORM_MEET)
     link = models.URLField(blank=True, help_text="Zoom/Meet havolasi")
     haqida = models.TextField(blank=True)
     yaratilgan = models.DateTimeField(auto_now_add=True)
@@ -39,3 +50,7 @@ class FreeDars(models.Model):
     
     def __str__(self):
         return f"{self.sarlavha} - {self.sana.strftime('%d.%m.%Y')}"
+
+    @property
+    def platform_label(self) -> str:
+        return dict(self.PLATFORM_CHOICES).get(self.platform, self.platform)

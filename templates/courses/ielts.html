@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}IELTS kursi — EduBridge{% endblock %}
+{% load profile_extras %}
 
 {% block extra_css %}
 <style>
@@ -112,13 +113,13 @@
       <p style="color:var(--muted);font-size:.875rem;margin-bottom:20px" data-i18n="ielts.bands_desc">Academic va General Training uchun ball tizimi</p>
       <div class="card" style="overflow:hidden">
         <table class="score-table">
-          <thead><tr><th>Band</th><th>Daraja</th><th>Maqsad</th></tr></thead>
+          <thead><tr><th data-i18n="ielts.table_band">Band</th><th data-i18n="course.table_level">Daraja</th><th data-i18n="course.table_goal">Maqsad</th></tr></thead>
           <tbody>
-            <tr><td>9.0</td><td>Expert</td><td>Native darajasi</td></tr>
-            <tr><td>8.0–8.5</td><td>Very Good</td><td>Top universitetlar</td></tr>
-            <tr><td>7.0–7.5</td><td>Good</td><td>UK, Canada, Australia</td></tr>
-            <tr><td>6.0–6.5</td><td>Competent</td><td>Ko'pchilik universitetlar</td></tr>
-            <tr><td>5.0–5.5</td><td>Modest</td><td>Ba'zi kollejlar</td></tr>
+            <tr><td>9.0</td><td data-i18n="ielts.level_expert">Expert</td><td data-i18n="ielts.goal_native">Native darajasi</td></tr>
+            <tr><td>8.0–8.5</td><td data-i18n="ielts.level_very_good">Very Good</td><td data-i18n="ielts.goal_top_uni">Top universitetlar</td></tr>
+            <tr><td>7.0–7.5</td><td data-i18n="ielts.level_good">Good</td><td data-i18n="ielts.goal_uk_ca_au">UK, Canada, Australia</td></tr>
+            <tr><td>6.0–6.5</td><td data-i18n="ielts.level_competent">Competent</td><td data-i18n="ielts.goal_most_uni">Ko'pchilik universitetlar</td></tr>
+            <tr><td>5.0–5.5</td><td data-i18n="ielts.level_modest">Modest</td><td data-i18n="ielts.goal_some_colleges">Ba'zi kollejlar</td></tr>
           </tbody>
         </table>
       </div>
@@ -129,20 +130,20 @@
       <p style="color:var(--muted);font-size:.875rem;margin-bottom:20px" data-i18n="course.faq_desc">Ko'p so'raladigan savollar</p>
       <div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">IELTS Academic va General farqi nima? <span class="arr">▾</span></div>
-          <div class="faq-a">Academic — universitet uchun (Reading va Writing qiyinroq). General Training — ish/immigratsiya uchun (Writing osonroq). Ikkalasida Listening va Speaking bir xil.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span data-i18n="ielts.faq_q1">IELTS Academic va General farqi nima?</span> <span class="arr">▾</span></div>
+          <div class="faq-a" data-i18n="ielts.faq_a1">Academic — universitet uchun (Reading va Writing qiyinroq). General Training — ish/immigratsiya uchun (Writing osonroq). Ikkalasida Listening va Speaking bir xil.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Qancha vaqt tayyorgarlik kerak? <span class="arr">▾</span></div>
-          <div class="faq-a">0 dan boshlasangiz 6–12 oy. Intermediate darajada 3–6 oy. Har haftada 3 ta dars bilan 4–6 oy ichida 6.5–7.0 olish mumkin.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span data-i18n="ielts.faq_q2">Qancha vaqt tayyorgarlik kerak?</span> <span class="arr">▾</span></div>
+          <div class="faq-a" data-i18n="ielts.faq_a2">0 dan boshlasangiz 6–12 oy. Intermediate darajada 3–6 oy. Har haftada 3 ta dars bilan 4–6 oy ichida 6.5–7.0 olish mumkin.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Imtihon qayerda topshiriladi? <span class="arr">▾</span></div>
-          <div class="faq-a">Toshkent, Samarqand, Buxoro, Farg'ona va boshqa shaharlarda British Council va IDP markazlarida topshirish mumkin.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span data-i18n="ielts.faq_q3">Imtihon qayerda topshiriladi?</span> <span class="arr">▾</span></div>
+          <div class="faq-a" data-i18n="ielts.faq_a3">Toshkent, Samarqand, Buxoro, Farg'ona va boshqa shaharlarda British Council va IDP markazlarida topshirish mumkin.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Imtihon narxi qancha? <span class="arr">▾</span></div>
-          <div class="faq-a">O'zbekistonda IELTS imtihoni taxminan $200–220 atrofida. British Council va IDP orqali ro'yxatdan o'tish mumkin.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span data-i18n="ielts.faq_q4">Imtihon narxi qancha?</span> <span class="arr">▾</span></div>
+          <div class="faq-a" data-i18n="ielts.faq_a4">O'zbekistonda IELTS imtihoni taxminan $200–220 atrofida. British Council va IDP orqali ro'yxatdan o'tish mumkin.</div>
         </div>
       </div>
     </div>
@@ -169,7 +170,7 @@
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
         <span class="badge badge-ielts">IELTS</span>
-        {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Band: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+        {% if mentor|score_value %}<span style="font-size:.78rem;color:var(--muted)">{{ mentor|score_label }}: <strong style="color:var(--text)">{{ mentor|score_value }}</strong></span>{% endif %}
         <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
       </div>
       <div class="mc-price"><div class="mc-price-n">150,000 so'm</div><div class="mc-price-s">1 hafta · 3 konsultatsiya · 1.5 soatdan</div></div>

@@ -28,8 +28,8 @@
       <form method="post" novalidate>
         {% csrf_token %}
         <div class="form-group">
-          <label class="form-label" for="id_username" data-i18n="auth.username">Foydalanuvchi nomi</label>
-          <input type="text" name="username" id="id_username" class="form-control" placeholder="username" data-i18n-ph="auth.username" autofocus>
+          <label class="form-label" for="id_username" data-i18n="auth.username">Username yoki email</label>
+          <input type="text" name="username" id="id_username" class="form-control" placeholder="username/email" data-i18n-ph="auth.username" value="{{ default_username|default:'' }}" autofocus>
         </div>
         <div class="form-group">
           <label class="form-label" for="id_password" data-i18n="auth.password">Parol</label>

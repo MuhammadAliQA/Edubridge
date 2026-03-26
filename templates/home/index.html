@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}EduBridge — IELTS, SAT,Admission Programme  &  Grants{% endblock %}
+{% load profile_extras %}
 
 {% block extra_css %}
 <style>
@@ -11,6 +12,14 @@
 .line-ielts{display:block;text-align:center;background:linear-gradient(90deg,#E2001A,#FF4D4D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .line-sat{display:block;text-align:center;background:linear-gradient(90deg,#009CDE,#74C7F0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .line3{display:block;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.line-grants{
+  display:block;
+  text-align:center;
+  background:linear-gradient(90deg,#FFD700,#FFC300,#FFB800);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
 .hero-sub{font-size:1rem;color:var(--muted);max-width:540px;margin:0 auto 36px;line-height:1.75;animation:fadeUp .6s .2s ease both;text-align:center}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
 .hero-actions .btn{padding:12px 28px;font-size:.95rem}
@@ -43,8 +52,8 @@
 .price-card.featured{border-color:rgba(59,130,246,.35);background:linear-gradient(160deg,rgba(59,130,246,.06) 0%,var(--bg) 60%)}
 .price-card.scholarship{border-color:rgba(245,158,11,.3);background:linear-gradient(160deg,rgba(245,158,11,.06) 0%,var(--bg) 60%)}
 .price-card.admission{border-color:rgba(20,184,166,.35);background:linear-gradient(160deg,rgba(20,184,166,.07) 0%,var(--bg) 60%)}
-.price-card.featured::before{content:'⭐ Eng ko\'p tanlangan';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
-.price-card.scholarship::before{content:'🌟 Yangi';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a0800;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.price-card.featured::before{content:'⭐ Top';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
+.price-card.scholarship::before{content:'🌟 New';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a0800;font-size:.65rem;font-weight:800;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.05em}
 .badge-scholarship{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
 .plan-badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:50px;width:fit-content}
 .badge-free{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
@@ -148,7 +157,8 @@
     <span class="line-ielts">IELTS</span>
     <span class="line-sat">SAT</span>
     <span class="line3" data-i18n="hero.line3">Admission Programme</span>
-  </h1>
+    <span class="line-grants">Grants</span>
+    </h1>
 
   <p class="hero-sub" data-i18n="hero.sub">Top mentorlar bilan haftada 3 ta konsultatsiya, 1.5 soatdan. O'zbekistonning istalgan viloyatidan — online, sifatli, arzon.</p>
 
@@ -159,8 +169,8 @@
 
   <div style="display:flex;justify-content:center;width:100%"><div class="hero-stats">
     <div class="hstat"><span class="hstat-n">12</span><span class="hstat-l" data-i18n="hero.stat_region">Viloyat</span></div>
-    <div class="hstat"><span class="hstat-n">3</span><span class="hstat-l" data-i18n="hero.stat_subject">Yo'nalish</span></div>
-    <div class="hstat"><span class="hstat-n">150K</span><span class="hstat-l" data-i18n="hero.stat_price">so'm / hafta</span></div>
+    <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l" data-i18n="hero.stat_subject">Yo'nalish</span></div>
+    <div class="hstat"><span class="hstat-n">150K+</span><span class="hstat-l" data-i18n="hero.stat_price">so'mdan</span></div>
     <div class="hstat"><span class="hstat-n">1h</span><span class="hstat-l" data-i18n="hero.stat_free">Bepul</span></div>
   </div></div>
 </section>
@@ -186,14 +196,15 @@
   <div class="container">
     <div class="sec-head">
       <div class="sec-tag" data-i18n="mentors.tag">Top mentorlar</div>
-      <h2 class="sec-h" data-i18n="mentors.title">3 ta yo'nalish bo'yicha</h2>
-      <p class="sec-p" data-i18n="mentors.sub">1 hafta · 3 konsultatsiya · 1.5 soat · 150,000 so'm</p>
+      <h2 class="sec-h" data-i18n="mentors.title">4 ta yo'nalish bo'yicha</h2>
+      <p class="sec-p" data-i18n="mentors.sub">Tariflar turlicha: konsultatsiya, Premium, Admission, Grants.</p>
     </div>
 
     <div class="tab-bar">
       <button class="tab-btn active" onclick="showTab('ielts',this)">🎯 IELTS</button>
       <button class="tab-btn" onclick="showTab('sat',this)">📐 SAT</button>
       <button class="tab-btn" onclick="showTab('en',this)">🎓 <span data-i18n="mentors.tab_en">Admission</span></button>
+      <button class="tab-btn" onclick="showTab('grants',this)">🌍 <span data-i18n="mentors.tab_grants">Grants</span></button>
     </div>
 
     <!-- IELTS -->
@@ -212,7 +223,7 @@
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
           <span class="badge badge-ielts">IELTS</span>
-          {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Band: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+          {% if mentor|score_value %}<span style="font-size:.78rem;color:var(--muted)">{{ mentor|score_label }}: <strong style="color:var(--text)">{{ mentor|score_value }}</strong></span>{% endif %}
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
@@ -244,7 +255,7 @@
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
           <span class="badge badge-sat">SAT</span>
-          {% if mentor.ball %}<span style="font-size:.78rem;color:var(--muted)">Ball: <strong style="color:var(--text)">{{ mentor.ball }}</strong></span>{% endif %}
+          {% if mentor|score_value %}<span style="font-size:.78rem;color:var(--muted)">{{ mentor|score_label }}: <strong style="color:var(--text)">{{ mentor|score_value }}</strong></span>{% endif %}
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
@@ -279,14 +290,45 @@
           <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
         </div>
         <div class="mc-price">
-          <div class="mc-price-n">250,000 so'm</div>
-          <div class="mc-price-s">4 konsultatsiya · 1.5 soatdan · 1.5 haftada</div>
+          <div class="mc-price-n" data-i18n="mentors.price_admission">250,000 so'm</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub_admission">4 konsultatsiya · 1.5 soatdan · 1.5 haftada</div>
         </div>
         <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
       </div>
       {% empty %}
       <div class="empty-tab">
-        <p>Hozircha Admission mentorlari yo'q. <a href="/mentor/royxat/">Birinchi mentor bo'ling!</a></p>
+        <p><span data-i18n="mentors.empty_en">Hozircha Admission mentorlari yo'q.</span> <a href="/mentor/royxat/" data-i18n="mentors.be_first">Birinchi mentor bo'ling!</a></p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- GRANTS -->
+    <div class="tab-pane" id="tab-grants">
+      {% for mentor in top_grants %}
+      <div class="mentor-card" onclick="location.href='/mentor/{{ mentor.pk }}/'">
+        <div class="mc-top">
+          <div class="mc-av" style="background:linear-gradient(135deg,#b45309,#f59e0b)">
+            {% if mentor.rasm %}<img src="{{ mentor.rasm.url }}" alt="">{% else %}{{ mentor.user.first_name|first }}{{ mentor.user.last_name|first }}{% endif %}
+          </div>
+          <div>
+            <div class="mc-name">{{ mentor.user.get_full_name }}</div>
+            <div class="mc-loc">📍 {{ mentor.get_viloyat_display }}</div>
+            <div class="mc-stars">★★★★★ {{ mentor.reytinq|floatformat:1 }}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <span class="badge badge-grants">Grants</span>
+          <span style="font-size:.78rem;color:var(--muted)">{{ mentor.tajriba_yil }} yil</span>
+        </div>
+        <div class="mc-price" style="background:linear-gradient(135deg,rgba(245,158,11,.10),rgba(161,98,7,.10));border-color:rgba(245,158,11,.22)">
+          <div class="mc-price-n" style="color:#fbbf24" data-i18n="mentors.price_grants">350,000 so'm</div>
+          <div class="mc-price-s" data-i18n="mentors.price_sub_grants">Boshlanishdan submitgacha yordam</div>
+        </div>
+        <div class="mc-btn" data-i18n="mentors.details">Batafsil →</div>
+      </div>
+      {% empty %}
+      <div class="empty-tab">
+        <p><span data-i18n="mentors.empty_grants">Hozircha Grants mentorlari yo'q.</span> <a href="/mentor/royxat/" data-i18n="mentors.be_first">Birinchi mentor bo'ling!</a></p>
       </div>
       {% endfor %}
     </div>
@@ -403,7 +445,15 @@
       <div>
         <div class="sec-tag" style="display:block;margin-bottom:10px" data-i18n="free.tag">Bepul</div>
         <h2 class="free-h">🆓 <span data-i18n="free.title">Bepul IELTS va SAT konsultatsiyasi</span></h2>
-        <p class="free-p" data-i18n="free.desc">Mentorlarimiz bepul 1 soatlik konsultatsiya o'tkazadi. IELTS yoki SAT bo'yicha birini tanlang. Ro'yxatdan o'tmasdan ham qatnashingiz mumkin.</p>
+        <p class="free-p" data-i18n="free.desc">Bepul konsultatsiyalar jadval bo'yicha e'lon qilinadi. Zoom yoki Google Meet orqali — sayt ichida live video yo'q.</p>
+        {% if kelayotgan_free %}
+        <div style="margin-top:12px;color:var(--muted);font-size:.85rem;line-height:1.7">
+          <strong style="color:var(--text)">Keyingi bepul darslar:</strong>
+          {% for d in kelayotgan_free|slice:":3" %}
+            <div>• {{ d.sana|date:"d.m H:i" }} — {{ d.get_yonalish_display }} ({{ d.platform_label }})</div>
+          {% endfor %}
+        </div>
+        {% endif %}
         <div class="free-pills">
           <span class="free-pill">🎯 <span data-i18n="free.pill_once">Bir martalik</span></span>
           <span class="free-pill">⏱ 1 soat</span>
